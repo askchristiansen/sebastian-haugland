@@ -123,14 +123,22 @@ new Chart(document.getElementById("radarChart"), {
         ]
     },
     options: {
-        plugins: { legend: { labels: { color: '#e2e8f0' } } },
-        scales: {
-            r: {
-                min: 40,
-                max: 100,
-                grid: { color: "#1e293b" },
-                pointLabels: { color: "#cbd5e1" },
-                ticks: { display: false }
+    plugins: { 
+        legend: { labels: { color: '#000000' } }
+    },
+    scales: {
+        r: {
+            min: 0,
+            max: 100,
+            grid: { color: "#d1d5db" },
+            pointLabels: { 
+                color: "#000000",
+                font: { size: 10 }
+            },
+            ticks: {
+                color: "#000000",
+                backdropColor: "transparent",
+                stepSize: 20
             }
         }
     }
@@ -169,8 +177,11 @@ function generatePDF() {
     y += 15;
 
     // TEXT PAGE
-    addSection("Player Profile", 
-    "Haugland profiles as a high-efficiency centre forward with above-average physical and defensive contribution relative to his position.");
+    addSection("Executive Summary",
+"Haugland profiles as a high-efficiency, low-volume striker whose output is driven primarily by finishing rather than chance generation. He adds secondary value through pressing, dueling, and defensive contribution. Projection indicates a role-specific forward at higher levels, with output dependent on team structure and chance supply.");
+
+addSection("Player Profile", 
+"Haugland profiles as a high-efficiency centre forward with above-average physical and defensive contribution relative to his position. His production is driven more by finishing than by consistent involvement in chance creation.");
 
     addSection("Key Performance Metrics",
     "Goals per 90: 0.50 (+6.6 over xG)\n" +
@@ -233,8 +244,8 @@ function generatePDF() {
     addSection("Projection", 
     "Projected 8–13 goals in Eliteserien under structured conditions. Output depends on team chance creation.");
 
-    addSection("Final Assessment", 
-    "High-efficiency, low-volume striker. Value driven by finishing and defensive contribution.");
+    addSection("Final Assessment",
+"Haugland profiles as a high-efficiency, low-volume centre forward whose value is driven by finishing and defensive contribution rather than chance creation. His effectiveness is closely tied to team structure and service quality. At higher levels, he projects as a role-specific striker rather than a primary attacking focal point.");
 
     addSection("Data Limitations", 
     "Sample: 43 matches. Performance influenced by system and chance quality. Finishing may regress.");
