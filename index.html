@@ -1,176 +1,246 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Haugland – Scout Report</title>
-
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
-<style>
-body { font-family: Inter, sans-serif; }
-.card { transition: .25s; }
-.card:hover { transform: translateY(-5px); }
-.stat { font-size: 2.5rem; font-weight: 700; }
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sebastian Haugland – Scouting Report</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', system_ui, sans-serif; background: #020617; color: #e2e8f0; }
+        .card { background: #0f172a; border-radius: 20px; padding: 28px; }
+        .stat-number { font-size: 2.95rem; font-weight: 700; letter-spacing: -1.5px; }
+        .highlight { background: linear-gradient(135deg, #0f172a, #1e2937); }
+    </style>
 </head>
+<body>
 
-<body class="bg-slate-950 text-slate-200">
+<div class="max-w-5xl mx-auto px-6 py-12">
 
-<div class="max-w-6xl mx-auto px-6 py-12">
+    <!-- HEADER -->
+    <div class="flex flex-col md:flex-row justify-between items-start mb-12 gap-8">
+        <div>
+            <h1 class="text-6xl font-bold tracking-tighter">Sebastian Haugland</h1>
+            <p class="text-3xl text-emerald-400 mt-2">Centre Forward • IL Hødd (OBOS Ligaen)</p>
+            <div class="flex flex-wrap gap-3 mt-6">
+                <span class="px-5 py-2 bg-emerald-900/60 text-emerald-300 rounded-2xl text-sm font-medium">29 years • 176 cm • Right-footed</span>
+                <span class="px-5 py-2 bg-slate-800 rounded-2xl text-sm font-medium">Late Bloomer</span>
+            </div>
+        </div>
+        <div class="text-right">
+            <div class="uppercase text-xs tracking-widest text-slate-400">SCOUT REPORT • MARCH 2026</div>
+            <div class="text-[5.8rem] leading-none font-bold text-emerald-400 mt-1">8.4</div>
+            <div class="text-slate-400">OBOS Ligaen</div>
+        </div>
+    </div>
 
-<!-- HEADER -->
-<div class="flex justify-between mb-12">
-<div>
-<h1 class="text-5xl font-bold">Sebastian Haugland</h1>
-<p class="text-emerald-400 text-xl mt-2">Centre Forward • Hødd</p>
-<p class="text-slate-400 mt-4 max-w-xl">
-Low-volume, high-efficiency striker with strong pressing and penalty-box presence.
-</p>
-</div>
+    <!-- KEY STATS -->
+    <div class="highlight rounded-3xl p-10 mb-16 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div>
+            <div class="text-emerald-400 text-sm tracking-widest">GOALS / 90</div>
+            <div class="stat-number text-white">0.50</div>
+            <div class="text-xs text-emerald-300">+6.6 over xG</div>
+        </div>
+        <div>
+            <div class="text-emerald-400 text-sm tracking-widest">xG / 90</div>
+            <div class="stat-number text-white">0.30</div>
+        </div>
+        <div>
+            <div class="text-emerald-400 text-sm tracking-widest">DUELS WON / 90</div>
+            <div class="stat-number text-white">11.2</div>
+        </div>
+        <div>
+            <div class="text-emerald-400 text-sm tracking-widest">REC. OPP. HALF / 90</div>
+            <div class="stat-number text-white">3.9</div>
+        </div>
+    </div>
 
-<div class="text-right">
-<div class="text-xs text-slate-400">Scout Rating</div>
-<div class="text-5xl text-emerald-400 font-bold">8.4</div>
-</div>
-</div>
+    <!-- MAIN ANALYSIS TEXT -->
+    <div class="prose prose-invert max-w-none text-slate-300 leading-relaxed mb-16 space-y-6">
+        <p>Sebastian Haugland is a 29-year-old centre forward whose performance profile is characterized by high finishing efficiency combined with above-average physical and defensive contribution for his position. Across 43 OBOS Ligaen matches (3,082 minutes) for Åsane and Hødd, he has produced 17 goals, averaging 0.50 goals per 90 minutes. This output is supported by an estimated expected goals (xG) total of around 10.4, indicating a significant overperformance of +6.6 goals. His xG per 90 (~0.30), however, remains relatively modest, suggesting that his production is driven more by efficiency than by consistent involvement in chance generation.</p>
 
-<!-- STATS -->
-<div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center bg-slate-900 p-8 rounded-2xl mb-12">
-<div><div class="text-xs text-emerald-400">Goals/90</div><div class="stat">0.50</div></div>
-<div><div class="text-xs text-emerald-400">xG/90</div><div class="stat">0.30</div></div>
-<div><div class="text-xs text-emerald-400">Duels</div><div class="stat">11.2</div></div>
-<div><div class="text-xs text-emerald-400">Recoveries</div><div class="stat">3.9</div></div>
-</div>
+        <p>From an attacking perspective, Haugland operates primarily as a penalty-box finisher rather than a volume shooter or creator. His relatively low xG per 90 indicates limited participation in the buildup and creation phases, while his finishing output points to strong positioning, timing, and execution in high-value areas. Heatmap data shows a clear concentration of activity inside and around the penalty area, with a tendency toward the right side of the box.</p>
 
-<!-- TEXT -->
-<p class="text-slate-300 mb-12 max-w-3xl">
-Haugland delivers consistent output through positioning and efficiency rather than shot volume.
-His profile is built around penalty-box presence and physical competitiveness.
-</p>
+        <p>A notable aspect of Haugland’s profile is his contribution without possession. He records approximately 11.2 duels won per 90 minutes and 3.9 recoveries in the opposition half, both of which are high relative to typical centre forwards. These metrics indicate consistent involvement in pressing phases and a capacity to contribute defensively within structured systems.</p>
 
-<!-- HEATMAP -->
-<h2 class="text-2xl mb-4">Movement Profile</h2>
-<img src="heatmap.png" class="rounded-xl mb-4">
+        <p>Haugland has maintained consistent output across two different environments at Åsane and Hødd. This suggests a degree of tactical adaptability, although both environments emphasize delivering the striker into advanced areas.</p>
 
-<p class="text-slate-400 mb-12">
-Clear box-striker profile. Heavy right-side activity, minimal build-up involvement.
-</p>
+        <p>At a higher level, such as the Eliteserien, he is likely to function as a role-specific striker whose production depends on the volume and quality of chances created by the team. Under favorable structural conditions, a projected output in the range of 8–13 goals per season appears realistic, with his defensive contribution providing additional baseline value even if finishing efficiency declines.</p>
+    </div>
 
-<!-- CARDS -->
-<div class="grid md:grid-cols-2 gap-6 mb-12">
+    <!-- HEATMAP -->
+    <div class="mb-16">
+        <h2 class="text-3xl font-semibold mb-6">Movement Profile</h2>
+        <div class="card overflow-hidden">
+            <img src="heatmap.png" class="w-full" alt="Sebastian Haugland Heatmap">
+            <div class="p-6 text-slate-300 bg-slate-950 border-t border-slate-700">
+                The heatmap shows a clear concentration of activity inside and around the penalty area, with a bias toward the right side. Haugland operates primarily as a box poacher focused on end-product actions rather than build-up participation.
+            </div>
+        </div>
+    </div>
 
-<div class="card bg-slate-900 p-6 rounded-xl">
-<h3 class="text-orange-400 mb-3">Attacking</h3>
-<p>
-17 goals from ~10.4 xG (+6.6). Elite finishing, low volume.
-</p>
-</div>
+    <!-- RADAR -->
+    <div class="mb-16">
+        <h2 class="text-3xl font-semibold mb-6">Attribute Profile vs OBOS Strikers</h2>
+        <div class="card p-8">
+            <canvas id="radarChart" class="w-full h-96"></canvas>
+        </div>
+    </div>
 
-<div class="card bg-slate-900 p-6 rounded-xl">
-<h3 class="text-blue-400 mb-3">Defensive</h3>
-<p>
-11.2 duels + 3.9 recoveries. High pressing impact.
-</p>
-</div>
-
-</div>
-
-<!-- RADAR -->
-<h2 class="text-2xl mb-4">Profile Radar</h2>
-<div class="bg-slate-900 p-6 rounded-xl mb-12">
-<canvas id="radarChart" height="250"></canvas>
-</div>
-
-<!-- PROJECTION -->
-<div class="bg-slate-900 p-6 rounded-xl mb-12">
-<h3 class="text-emerald-400 mb-3">Projection</h3>
-<p>
-8–12 goals in Eliteserien. Strong fit in pressing systems.
-Risk: efficiency regression.
-</p>
-</div>
-
-<!-- CONCLUSION -->
-<div class="text-center max-w-2xl mx-auto">
-<h2 class="text-3xl font-bold mb-4">Efficient role striker</h2>
-<p class="text-slate-300">
-Not a volume creator — but a reliable finisher and strong system player.
-</p>
-</div>
-
-<!-- BUTTON -->
-<div class="text-center mt-10">
-<button onclick="downloadPDF()" class="bg-emerald-500 text-black px-6 py-3 rounded-xl font-bold">
-Download PDF
-</button>
-</div>
+    <!-- DOWNLOAD BUTTON -->
+    <div class="text-center mt-16">
+        <button onclick="generatePDF()" 
+                class="bg-emerald-500 hover:bg-emerald-600 text-black font-semibold px-8 py-4 rounded-2xl transition-colors">
+            Download Full Scout Report as PDF
+        </button>
+    </div>
 
 </div>
 
 <script>
-
-// RADAR FIXED
+// Radar Chart
 new Chart(document.getElementById("radarChart"), {
-type: "radar",
-data: {
-labels: ["Finishing","Efficiency","Duels","Pressing","Box Presence","Passing"],
-datasets: [{
-label: "Haugland",
-data: [90,92,85,80,88,65],
-borderColor: "#10b981",
-backgroundColor: "rgba(16,185,129,0.2)"
-}]
-},
-options: {
-scales: {
-r: {
-min: 0,
-max: 100,
-ticks: { stepSize: 20 }
-}
-}
-}
+    type: "radar",
+    data: {
+        labels: ["Finishing", "xG Efficiency", "Duels Won", "Recoveries", "Box Presence", "Dribbling", "Pressing", "Passing"],
+        datasets: [
+            {
+                label: "Haugland",
+                data: [88, 92, 82, 78, 87, 62, 80, 67],
+                backgroundColor: "rgba(16,185,129,0.25)",
+                borderColor: "#10b981",
+                borderWidth: 3
+            },
+            {
+                label: "OBOS Average",
+                data: [65, 55, 62, 55, 68, 55, 60, 60],
+                backgroundColor: "rgba(148,163,184,0.15)",
+                borderColor: "#94a3b8",
+                borderDash: [3, 2]
+            }
+        ]
+    },
+    options: {
+        plugins: { legend: { labels: { color: '#e2e8f0' } } },
+        scales: {
+            r: {
+                min: 40,
+                max: 100,
+                grid: { color: "#1e293b" },
+                pointLabels: { color: "#cbd5e1" },
+                ticks: { display: false }
+            }
+        }
+    }
 });
 
-// PDF FIXED
-function downloadPDF(){
-const { jsPDF } = window.jspdf;
-const doc = new jsPDF();
+// PDF Function
+function generatePDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
 
-let y = 10;
+    let y = 20;
 
-doc.setFontSize(16);
-doc.text("Sebastian Haugland – Scouting Report", 10, y);
+    const addSection = (title, text) => {
+        doc.setFont("Helvetica", "bold");
+        doc.setFontSize(14);
+        doc.text(title, 20, y);
+        y += 8;
 
-y += 10;
+        doc.setFont("Helvetica", "normal");
+        doc.setFontSize(11);
 
-doc.setFontSize(12);
-doc.text("Profile:", 10, y);
-y += 6;
-doc.text("Efficient striker with strong pressing output.", 10, y);
+        const lines = doc.splitTextToSize(text, 170);
+        doc.text(lines, 20, y);
+        y += lines.length * 6.5 + 10;
+    };
 
-y += 10;
+    // HEADER
+    doc.setFont("Helvetica", "bold");
+    doc.setFontSize(18);
+    doc.text("Sebastian Haugland – Scouting Report", 20, y);
+    y += 10;
 
-doc.text("Key Stats:", 10, y);
-y += 6;
-doc.text("Goals/90: 0.50 | xG/90: 0.30", 10, y);
-y += 6;
-doc.text("Duels: 11.2 | Recoveries: 3.9", 10, y);
+    doc.setFontSize(11);
+    doc.setFont("Helvetica", "normal");
+    doc.text("Centre Forward • IL Hødd • OBOS Ligaen • March 2026", 20, y);
+    y += 15;
 
-y += 10;
+    // TEXT PAGE
+    addSection("Player Profile", 
+    "Haugland profiles as a high-efficiency centre forward with above-average physical and defensive contribution relative to his position.");
 
-doc.text("Projection:", 10, y);
-y += 6;
-doc.text("8–12 goals at Eliteserien level.", 10, y);
+    addSection("Key Performance Metrics",
+    "Goals per 90: 0.50 (+6.6 over xG)\n" +
+    "xG per 90: ~0.30\n" +
+    "Duels won per 90: 11.2\n" +
+    "Recoveries in opposition half per 90: 3.9\n" +
+    "Touches in penalty area per 90: 13.4");
 
-doc.save("Haugland_Report.pdf");
+    addSection("Attacking Analysis", 
+    "17 goals from ~10.4 xG (+6.6). Low xG volume (~0.30/90) confirms a finisher profile rather than a creator.");
+
+    addSection("Defensive Contribution", 
+    "11.2 duels and 3.9 recoveries per 90 indicate high pressing involvement and physical impact.");
+
+    addSection("Strengths",
+    "• Elite finishing efficiency\n" +
+    "• Strong box movement\n" +
+    "• High duel involvement\n" +
+    "• Defensive contribution");
+
+    addSection("Weaknesses",
+    "• Low shot volume\n" +
+    "• Limited link-up play\n" +
+    "• Dependent on service");
+
+    // NEW PAGE → VISUALS
+    doc.addPage();
+
+    // RADAR CHART
+    const radarCanvas = document.getElementById("radarChart");
+    const radarImage = radarCanvas.toDataURL("image/png", 1.0);
+
+    doc.setFontSize(14);
+    doc.text("Attribute Profile", 20, 20);
+
+    doc.addImage(radarImage, "PNG", 15, 30, 180, 120);
+
+    // HEATMAP
+    const heatmap = document.querySelector("img[src='heatmap.png']");
+    const tempCanvas = document.createElement("canvas");
+    const ctx = tempCanvas.getContext("2d");
+
+    tempCanvas.width = heatmap.width;
+    tempCanvas.height = heatmap.height;
+
+    ctx.drawImage(heatmap, 0, 0);
+
+    const heatmapImage = tempCanvas.toDataURL("image/png");
+
+    doc.text("Movement Profile", 20, 160);
+    doc.addImage(heatmapImage, "PNG", 15, 170, 180, 90);
+
+    // NEW PAGE → FINAL
+    doc.addPage();
+    y = 20;
+
+    addSection("Tactical Fit", 
+    "Best suited for structured attacking systems that generate frequent box entries and crosses.");
+
+    addSection("Projection", 
+    "Projected 8–13 goals in Eliteserien under structured conditions. Output depends on team chance creation.");
+
+    addSection("Final Assessment", 
+    "High-efficiency, low-volume striker. Value driven by finishing and defensive contribution.");
+
+    addSection("Data Limitations", 
+    "Sample: 43 matches. Performance influenced by system and chance quality. Finishing may regress.");
+
+    doc.save("Sebastian_Haugland_Scouting_Report.pdf");
 }
-
 </script>
 
 </body>
