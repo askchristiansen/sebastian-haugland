@@ -8,8 +8,77 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
 <style>
-  :root {
+/* ── TAB NAV ── */
+.tab-nav {
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+  background: #0a0c10;
+  border-bottom: 1px solid #222834;
+  display: flex;
+  align-items: center;
+  padding: 0 48px;
+}
+.tab-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #e8f033;
+  padding-right: 20px;
+  border-right: 1px solid #222834;
+  margin-right: 8px;
+  line-height: 48px;
+  letter-spacing: 0.05em;
+}
+.tab-btn {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #6b7280;
+  padding: 14px 20px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+  margin-bottom: -1px;
+}
+.tab-btn:hover { color: #f0f2f5; }
+.tab-btn.active { color: #e8f033; border-bottom-color: #e8f033; }
+
+/* ── DASHBOARD WRAPPER ── */
+#view-dashboard { display: block; }
+
+/* ── REPORT WRAPPER ── */
+#view-report {
+  display: none;
+  background: #f5f2eb;
+  min-height: 100vh;
+}
+#view-report-inner {
+  color: #0f0e0d;
+  font-family: 'Georgia', serif;
+  font-size: 13px;
+  line-height: 1.6;
+  padding: 48px 40px;
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+@media print {
+  .tab-nav { display: none !important; }
+  #view-dashboard { display: none !important; }
+  #view-report { display: block !important; }
+}
+</style>
+
+<!-- Dashboard styles -->
+<style>
+:root {
     --bg: #0a0c10;
     --surface: #111318;
     --surface2: #181c24;
@@ -601,9 +670,281 @@
     .match-mins, .match-row > :nth-child(5) { display: none; }
   }
 </style>
+
+<!-- Report styles (scoped to #view-report) -->
+<style>
+#view-report * { box-sizing: border-box; margin: 0; padding: 0; }#view-report body {
+    background: #f5f2eb;
+    color: #0f0e0d;
+    font-family: 'Georgia', serif;
+    font-size: 13px;
+    line-height: 1.6;
+    padding: 48px 40px;
+    max-width: 820px;
+    margin: 0 auto;
+  }#view-report /* ── HEADER ── */
+  .report-header {
+    border-top: 3px solid #0f0e0d;
+    border-bottom: 1px solid rgba(15,14,13,0.15);
+    padding: 16px 0 14px;
+    margin-bottom: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }#view-report .report-label {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #7a7060;
+    margin-bottom: 8px;
+  }#view-report .player-name {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 40px;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: #0f0e0d;
+  }#view-report .player-sub {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    color: #7a7060;
+    margin-top: 8px;
+    letter-spacing: 0.04em;
+  }#view-report .verdict-badge {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 8px 16px;
+    border: 1.5px solid #2a7a3e;
+    color: #2a7a3e;
+    border-radius: 2px;
+    white-space: nowrap;
+  }#view-report /* ── SECTION ── */
+  .section { margin-bottom: 28px; }#view-report .section-header {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #7a7060;
+    border-bottom: 1px solid rgba(15,14,13,0.15);
+    padding-bottom: 6px;
+    margin-bottom: 16px;
+  }#view-report /* ── STAT GRID ── */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border: 1px solid rgba(15,14,13,0.15);
+    border-bottom: none;
+  }#view-report .stat-grid-2 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border: 1px solid rgba(15,14,13,0.15);
+    border-top: none;
+  }#view-report .stat-cell {
+    padding: 16px 14px;
+    border-right: 1px solid rgba(15,14,13,0.15);
+    border-bottom: 1px solid rgba(15,14,13,0.15);
+  }#view-report .stat-cell:last-child { border-right: none; }#view-report .stat-cell.dark { background: #0f0e0d; }#view-report .stat-n {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 30px;
+    font-weight: 900;
+    color: #0f0e0d;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }#view-report .stat-cell.dark .stat-n { color: #f5f2eb; }#view-report .stat-cell.dark .stat-l { color: rgba(245,242,235,0.55); }#view-report .stat-cell.dark .stat-s { color: rgba(245,242,235,0.45); }#view-report .stat-n.red { color: #d4451a; }#view-report .stat-n.green { color: #2a7a3e; }#view-report .stat-n.blue { color: #1a5cd4; }#view-report .stat-n.sm { font-size: 20px; }#view-report .stat-l {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10px;
+    color: #7a7060;
+    margin-top: 5px;
+    letter-spacing: 0.03em;
+  }#view-report .stat-s {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10px;
+    color: #9a8f7f;
+    margin-top: 2px;
+  }#view-report /* ── PROSE ── */
+  .prose {
+    font-size: 12.5px;
+    color: #4a4540;
+    line-height: 1.85;
+  }#view-report .prose strong { color: #0f0e0d; font-weight: 700; }#view-report .prose + .prose { margin-top: 12px; }#view-report /* ── TAGS ── */
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }#view-report .tag {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border: 1px solid rgba(15,14,13,0.2);
+    color: #7a7060;
+    border-radius: 1px;
+  }#view-report .tag.green { border-color: #2a7a3e; color: #2a7a3e; }#view-report .tag.red { border-color: #d4451a; color: #d4451a; }#view-report .tag.blue { border-color: #1a5cd4; color: #1a5cd4; }#view-report /* ── BAR CHART ── */
+  .bar-section { display: flex; flex-direction: column; gap: 11px; }#view-report .bar-row {
+    display: grid;
+    grid-template-columns: 170px 1fr 52px;
+    align-items: center;
+    gap: 12px;
+  }#view-report .bar-lbl {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    color: #7a7060;
+    text-align: right;
+  }#view-report .bar-track {
+    height: 6px;
+    background: rgba(15,14,13,0.07);
+    border: 1px solid rgba(15,14,13,0.1);
+  }#view-report .bar-fill { height: 100%; }#view-report .bar-fill.green { background: #2a7a3e; }#view-report .bar-fill.blue { background: #1a5cd4; }#view-report .bar-fill.mid { background: #7a7060; }#view-report .bar-fill.warn { background: #b8920f; }#view-report .bar-fill.red { background: #d4451a; }#view-report .bar-val {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: #0f0e0d;
+  }#view-report /* ── SIGNAL GRID ── */
+  .signal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }#view-report .signal-card {
+    background: rgba(15,14,13,0.03);
+    border: 1px solid rgba(15,14,13,0.12);
+    padding: 16px;
+  }#view-report .signal-title {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }#view-report .signal-title.green { color: #2a7a3e; }#view-report .signal-title.red { color: #d4451a; }#view-report .signal-item {
+    font-size: 11.5px;
+    color: #5a5550;
+    line-height: 1.7;
+    padding-left: 12px;
+    position: relative;
+    margin-bottom: 6px;
+  }#view-report .signal-item::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: rgba(15,14,13,0.2);
+  }#view-report .signal-item strong { color: #0f0e0d; font-weight: 700; }#view-report /* ── CONTEXT BOX ── */
+  .context-box {
+    border-left: 3px solid #d4451a;
+    padding: 14px 18px;
+    background: rgba(212,69,26,0.04);
+    font-size: 12px;
+    color: #4a4540;
+    line-height: 1.85;
+    margin-top: 10px;
+  }#view-report .context-box.green { border-left-color: #2a7a3e; background: rgba(42,122,62,0.04); }#view-report .context-box.blue { border-left-color: #1a5cd4; background: rgba(26,92,212,0.04); }#view-report .context-box strong { color: #0f0e0d; font-weight: 700; }#view-report /* ── META GRID ── */
+  .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; margin-top: 16px; }#view-report .meta-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(15,14,13,0.08);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }#view-report .meta-row:last-child { border-bottom: none; }#view-report .meta-k { font-size: 11px; color: #7a7060; }#view-report .meta-v { font-size: 11px; font-weight: 700; color: #0f0e0d; text-align: right; }#view-report /* ── RISK ── */
+  .risk-row { display: flex; align-items: center; gap: 16px; margin-top: 12px; }#view-report .risk-end { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 10px; color: #7a7060; }#view-report .risk-track {
+    flex: 1;
+    height: 8px;
+    background: linear-gradient(to right, #2a7a3e, #b8920f, #d4451a);
+  }#view-report .risk-track-inner { position: relative; height: 100%; }#view-report .risk-dot {
+    position: absolute;
+    top: 50%;
+    left: 38%;
+    transform: translate(-50%, -50%);
+    width: 16px;
+    height: 16px;
+    background: #0f0e0d;
+    border: 2.5px solid #f5f2eb;
+    border-radius: 50%;
+  }#view-report .risk-label {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    color: #b8920f;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }#view-report /* ── LATE BLOOMER TIMELINE ── */
+  .timeline {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    margin-top: 16px;
+    position: relative;
+  }#view-report .timeline::before {
+    content: '';
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    right: 18px;
+    height: 2px;
+    background: rgba(15,14,13,0.12);
+  }#view-report .tl-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }#view-report .tl-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #7a7060;
+    border: 2px solid #f5f2eb;
+    margin-bottom: 8px;
+    flex-shrink: 0;
+  }#view-report .tl-dot.active {
+    background: #0f0e0d;
+    width: 16px;
+    height: 16px;
+  }#view-report .tl-dot.highlight { background: #2a7a3e; }#view-report .tl-year {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 800;
+    color: #0f0e0d;
+    margin-bottom: 3px;
+  }#view-report .tl-club {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 9px;
+    color: #7a7060;
+    text-align: center;
+    line-height: 1.4;
+  }#view-report .tl-level {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 4px;
+    text-align: center;
+  }#view-report .tl-level.grey { color: #9a8f7f; }#view-report .tl-level.amber { color: #b8920f; }#view-report .tl-level.green { color: #2a7a3e; }#view-report /* ── FOOTER ── */
+  .report-footer {
+    border-top: 1px solid rgba(15,14,13,0.15);
+    padding-top: 14px;
+    margin-top: 32px;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10px;
+    color: #9a8f7f;
+    letter-spacing: 0.04em;
+  }#view-report .divider { border: none; border-top: 1px solid rgba(15,14,13,0.1); margin: 24px 0; }@media print {
+    body { background: white; padding: 32px; }
+  }
+</style>
+
 </head>
 <body>
 
+<div class="tab-nav">
+  <span class="tab-label">SH · 9</span>
+  <button class="tab-btn active" onclick="showTab('dashboard')">&#9632; Dashboard</button>
+  <button class="tab-btn" onclick="showTab('report')">&#9632; Scouting Report</button>
+</div>
+
+<div id="view-dashboard">
 <!-- HERO -->
 <div class="hero">
   <div class="hero-accent-line"></div>
@@ -867,7 +1208,7 @@
       <div class="scouting-section" style="margin-bottom:24px;">
         <div class="scouting-title">✦ Profile Summary</div>
         <p class="scouting-text">
-          Sebastian Haugland (born 12 Jun 1996, age 29) is one of Norwegian football's most remarkable <strong>late-bloomer stories</strong>. As recently as 2023 he was playing 4th-division football for Sandviken. He made his Obos Ligaen debut at age 28 in July 2024 — and immediately became Åsane's top scorer. Across 43 appearances for two clubs, he has maintained a consistent <strong>0.50 goals per 90</strong>, suggesting output driven by individual quality rather than team context. As of March 2026, he is reportedly <strong>close to a move to Icelandic top-flight club Breidablik</strong> (Conference League 2024/25) — becoming an international professional just three years after playing 3rd division football.
+          Sebastian Haugland (born 12 Jun 1996, age 29) is one of Norwegian football's most remarkable <strong>late-bloomer stories</strong>. As recently as 2023 he was playing 3rd division (4th tier) football for Sandviken. He made his Obos Ligaen debut at age 28 in July 2024 — and immediately became Åsane's top scorer. Across 43 appearances for two clubs, he has maintained a consistent <strong>0.50 goals per 90</strong>, suggesting output driven by individual quality rather than team context. As of March 2026, he is reportedly <strong>close to a move to Icelandic top-flight club Breidablik</strong> (Conference League 2024/25) — becoming an international professional just three years after playing 3rd division (4th tier) football.
         </p>
       </div>
 
@@ -918,7 +1259,7 @@
       <div class="scouting-section">
         <div class="scouting-title">✦ Verdict</div>
         <p class="scouting-text">
-          A <strong>high-efficiency, late-blooming finisher</strong> who consistently outperforms his xG (+6.6 over 43 games). Went from 4th-division football (2023) to international professional (2026) in under three years on the back of extraordinary work ethic and clinical finishing. Suited to structured systems generating high box-entry volume. The <strong>"Norways Jamie Vardy"</strong> comparison has merit — the ceiling at top level remains unproven, but the consistency, mentality and efficiency profile make him a genuine outlier. <strong>Breidablik (ISL) move expected.</strong>
+          A <strong>high-efficiency, late-blooming finisher</strong> who consistently outperforms his xG (+6.6 over 43 games). Went from 3rd division / 4th tier (2023) to international professional (2026) in under three years on the back of extraordinary work ethic and clinical finishing. Suited to structured systems generating high box-entry volume. The <strong>"Norways Jamie Vardy"</strong> comparison has merit — the ceiling at top level remains unproven, but the consistency, mentality and efficiency profile make him a genuine outlier. <strong>Breidablik (ISL) move expected.</strong>
         </p>
       </div>
     </div>
@@ -1283,5 +1624,284 @@ const logEl = document.getElementById('matchLog');
   logEl.appendChild(row);
 });
 </script>
+</div>
+
+<div id="view-report">
+  <div id="view-report-inner">
+<!-- HEADER -->
+<div class="report-header">
+  <div>
+    <div class="report-label">Scouting Report &middot; March 2026 &middot; Ask Hundhammer Christiansen</div>
+    <div class="player-name">Sebastian Haugland</div>
+    <div class="player-sub">NOR &middot; Age 29 (12.06.1996) &middot; IL H&oslash;dd &middot; Norway Obos Ligaen 2024/25 &middot; Right foot</div>
+  </div>
+  <div class="verdict-badge">Recommend — Monitor</div>
+</div>
+
+<!-- KEY STATS -->
+<div class="section">
+  <div class="section-header">Key Figures &mdash; 2024/25 Season (43 appearances, 3,082 min)</div>
+  <div class="stat-grid">
+    <div class="stat-cell dark">
+      <div class="stat-n">17</div>
+      <div class="stat-l">Goals</div>
+      <div class="stat-s">0.50 / 90</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-n green">+6.6</div>
+      <div class="stat-l">Goals minus xG</div>
+      <div class="stat-s">Overperformance</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-n">23.6%</div>
+      <div class="stat-l">Conversion rate</div>
+      <div class="stat-s">17 goals / 72 shots</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-n blue">3.97</div>
+      <div class="stat-l">Touches in box</div>
+      <div class="stat-s">per 90</div>
+    </div>
+  </div>
+  <div class="stat-grid-2">
+    <div class="stat-cell">
+      <div class="stat-n sm">0.41</div>
+      <div class="stat-l">Shot assists / 90</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-n sm">72</div>
+      <div class="stat-l">Shots total</div>
+      <div class="stat-s">44.4% on target</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-n sm">1.11</div>
+      <div class="stat-l">Recoveries opp. half / 90</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-n sm">55.0%</div>
+      <div class="stat-l">Dribble success</div>
+      <div class="stat-s">22 of 40 attempts</div>
+    </div>
+  </div>
+</div>
+
+<!-- LATE BLOOMER CAREER PATH -->
+<div class="section">
+  <div class="section-header">Career Path &mdash; Late Bloomer Profile</div>
+  <p class="prose">
+    Haugland's route to professional football is among the most unusual in Norwegian football. He spent the majority of his 20s in the lower divisions at Arna-Bj&oslash;rnar, never giving up the ambition of reaching the top. The decisive step came in 2023 when he moved to Sandviken IL in the <strong>3rd division (4th tier)</strong> — a lateral move that allowed him to refine his game as a striker. One year later he signed for &Aring;sane Fotball and stepped up <strong>two full divisions at once</strong>, debuting in the Obos Ligaen at age 28.
+  </p>
+  <p class="prose" style="margin-top:12px;">
+    The comparison to <strong>Jamie Vardy</strong> is apt: a player who refused to accept his ceiling, combined extraordinary professionalism with clinical finishing, and dramatically outperformed expectations at every level. Haugland's coach at &Aring;sane, Eirik Bakke, described him as <em>"the most professional player I've worked with — he's always the last to leave the pitch."</em>
+  </p>
+
+  <div class="timeline" style="margin-top:20px;">
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">–2022</div>
+      <div class="tl-club">Arna-Bj&oslash;rnar</div>
+      <div class="tl-level grey">4–5th tier</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">2023</div>
+      <div class="tl-club">Sandviken IL</div>
+      <div class="tl-level grey">3rd div / 4th tier</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot active"></div>
+      <div class="tl-year">2024</div>
+      <div class="tl-club">&Aring;sane FK<br/>Age 28</div>
+      <div class="tl-level amber">Obos Ligaen</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot active"></div>
+      <div class="tl-year">2025</div>
+      <div class="tl-club">IL H&oslash;dd<br/>Age 29</div>
+      <div class="tl-level amber">Obos Ligaen</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot highlight"></div>
+      <div class="tl-year">2026</div>
+      <div class="tl-club">Breidablik<br/>(expected)</div>
+      <div class="tl-level green">Intl. Professional</div>
+    </div>
+  </div>
+
+  <div class="tag-row">
+    <span class="tag green">Pure box striker</span>
+    <span class="tag green">Late bloomer</span>
+    <span class="tag green">xG overperformer</span>
+    <span class="tag green">High work rate</span>
+    <span class="tag red">Not a creator</span>
+    <span class="tag red">Low aerial threat</span>
+    <span class="tag blue">Vardy archetype</span>
+  </div>
+</div>
+
+<!-- PLAYER PROFILE -->
+<div class="section">
+  <div class="section-header">Player Profile</div>
+  <p class="prose">
+    Haugland is a <strong>right-footed centre forward</strong> who operates almost exclusively inside and around the penalty area. He does not drop deep to collect the ball or contribute to build-up; his value is concentrated in the final third. Heatmap data shows two clear hotspots — one central in front of goal and one along the right edge of the box — consistent with a player who makes <strong>late runs into the six-yard area</strong> and seeks right-footed finishes from just outside or inside the box.
+  </p>
+  <p class="prose" style="margin-top:12px;">
+    His xG/90 of 0.30 is modest for a striker, confirming that his output derives more from <strong>finishing quality than chance volume</strong>. He generates fewer opportunities than a traditional number nine but converts at an exceptional rate. This is sustainable to a degree — but some regression toward expected goals at a higher level is realistic.
+  </p>
+</div>
+
+<!-- EFFICIENCY -->
+<div class="section">
+  <div class="section-header">Efficiency &mdash; Percentage Metrics</div>
+  <div class="bar-section">
+    <div class="bar-row">
+      <div class="bar-lbl">Conversion rate</div>
+      <div class="bar-track"><div class="bar-fill green" style="width:70%"></div></div>
+      <div class="bar-val">23.6%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-lbl">Shot accuracy</div>
+      <div class="bar-track"><div class="bar-fill green" style="width:66%"></div></div>
+      <div class="bar-val">44.4%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-lbl">Dribble success</div>
+      <div class="bar-track"><div class="bar-fill blue" style="width:55%"></div></div>
+      <div class="bar-val">55.0%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-lbl">Pass accuracy</div>
+      <div class="bar-track"><div class="bar-fill mid" style="width:72%"></div></div>
+      <div class="bar-val">72.2%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-lbl">Aerial duel win rate</div>
+      <div class="bar-track"><div class="bar-fill warn" style="width:21%"></div></div>
+      <div class="bar-val">21.1%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-lbl">Duel win rate (ground)</div>
+      <div class="bar-track"><div class="bar-fill mid" style="width:42%"></div></div>
+      <div class="bar-val">~42%</div>
+    </div>
+  </div>
+</div>
+
+<!-- SIGNALS -->
+<div class="section">
+  <div class="section-header">Signals</div>
+  <div class="signal-grid">
+    <div class="signal-card">
+      <div class="signal-title green">Strengths</div>
+      <div class="signal-item"><strong>Clinical finishing</strong> &mdash; +6.6 xG overperformance over 43 games indicates genuine above-average quality, not noise</div>
+      <div class="signal-item"><strong>Box presence</strong> &mdash; 3.97 touches per 90 in the penalty area; consistently in the right place</div>
+      <div class="signal-item"><strong>Consistency across clubs</strong> &mdash; identical 0.50 G/90 at both &Aring;sane and H&oslash;dd, two different systems</div>
+      <div class="signal-item"><strong>Pressing contribution</strong> &mdash; 1.11 recoveries and 0.55 interceptions per 90 in opposition half; above average for a CF</div>
+      <div class="signal-item"><strong>Mentality</strong> &mdash; elite professionalism confirmed by multiple coaches; obsessive training habits</div>
+    </div>
+    <div class="signal-card">
+      <div class="signal-title red">Concerns</div>
+      <div class="signal-item"><strong>Regression risk</strong> &mdash; overperformance of +6.6 over a single season will partially normalise at a higher level</div>
+      <div class="signal-item"><strong>Aerial weakness</strong> &mdash; 21.1% aerial duel win rate is well below acceptable for a target striker</div>
+      <div class="signal-item"><strong>Limited creation</strong> &mdash; xA of 0.04/90; effectively zero creative output; fully dependent on teammates for supply</div>
+      <div class="signal-item"><strong>Age</strong> &mdash; at 29, development window is narrowing; ceiling at top level unproven</div>
+      <div class="signal-item"><strong>Context dependency</strong> &mdash; both clubs prioritised supply into the box; output may dip in possession-dominant systems</div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTEXTUAL CALIBRATION -->
+<div class="section">
+  <div class="section-header">Contextual Calibration</div>
+  <div class="context-box">
+    Both &Aring;sane and H&oslash;dd operated with a relatively direct style and prioritised getting the ball into advanced areas quickly — a format that suits Haugland well. He received good service in the box, allowing his penalty-area instincts to translate directly into goals. In a possession-dominant system requiring more build-up involvement, or against deeper blocks at a higher level, <strong>the volume of high-quality opportunities he receives will likely decrease</strong>. The key question at the next level is not whether he can finish — that appears to be a genuine strength — but whether his team can supply him in the areas where he is dangerous.
+  </div>
+  <div class="meta-grid">
+    <div>
+      <div class="meta-row"><span class="meta-k">Competition</span><span class="meta-v">Norway Obos Ligaen (2nd tier)</span></div>
+      <div class="meta-row"><span class="meta-k">Clubs observed</span><span class="meta-v">&Aring;sane FK + IL H&oslash;dd</span></div>
+      <div class="meta-row"><span class="meta-k">Heatmap dominance</span><span class="meta-v">Right side of penalty box</span></div>
+      <div class="meta-row"><span class="meta-k">Primary foot</span><span class="meta-v">Right</span></div>
+    </div>
+    <div>
+      <div class="meta-row"><span class="meta-k">Optimal role</span><span class="meta-v">Central striker / box finisher</span></div>
+      <div class="meta-row"><span class="meta-k">System requirement</span><span class="meta-v">High box-entry volume</span></div>
+      <div class="meta-row"><span class="meta-k">Not suited as</span><span class="meta-v">Target man / creator / deep CF</span></div>
+      <div class="meta-row"><span class="meta-k">Projected G/90 (next level)</span><span class="meta-v">~0.30&ndash;0.42</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- RISK -->
+<div class="section">
+  <div class="section-header">Risk Assessment</div>
+  <p class="prose">
+    Overall risk is assessed as <strong style="color:#b8920f;">medium</strong>, driven primarily by age and regression risk on the xG overperformance. Risk is meaningfully reduced if the acquiring club plays a transition-oriented style that generates crosses and entries into the box. The <strong>Breidablik move</strong> (Conference League football) represents a logical and well-calibrated step for a player at this stage.
+  </p>
+  <div class="risk-row">
+    <span class="risk-end">LOW</span>
+    <div class="risk-track">
+      <div class="risk-track-inner">
+        <div class="risk-dot"></div>
+      </div>
+    </div>
+    <span class="risk-end">HIGH</span>
+    <span class="risk-label">MEDIUM</span>
+  </div>
+</div>
+
+<!-- SYSTEM FIT -->
+<div class="section">
+  <div class="section-header">System Requirements for Optimal Use</div>
+  <div class="signal-grid">
+    <div class="signal-card">
+      <div class="signal-title green">Works well in systems with</div>
+      <div class="signal-item">High volume of crosses and entries into the penalty area</div>
+      <div class="signal-item">Transition-oriented play with space behind the defensive line</div>
+      <div class="signal-item">A clearly defined striker role with limited build-up responsibility</div>
+      <div class="signal-item">Wide players or full-backs who can supply the box regularly</div>
+    </div>
+    <div class="signal-card">
+      <div class="signal-title red">Does not suit systems with</div>
+      <div class="signal-item">Possession-dominant style requiring striker involvement in build-up</div>
+      <div class="signal-item">High aerial frequency — headers from crosses are a weakness</div>
+      <div class="signal-item">Expectation of creative output, assists or link-up play</div>
+      <div class="signal-item">Immediate high goal expectations without adjustment period</div>
+    </div>
+  </div>
+</div>
+
+<!-- CONCLUSION -->
+<div class="section">
+  <div class="section-header">Conclusion</div>
+  <div class="context-box green">
+    <strong>Recommended &mdash; with contextual conditions.</strong> Sebastian Haugland is one of the most prolific finishers in the Norwegian Obos Ligaen over the 2024/25 period, and his career trajectory — from 3rd division (4th tier) football at age 27 to an expected international transfer at 29 — is genuinely exceptional. The +6.6 xG overperformance across 43 games is too large and consistent to be dismissed as luck; it reflects real finishing quality.
+    <br><br>
+    The primary risk is not talent but context: he needs a system that supplies the box. Bought correctly — right league, right role, realistic goal expectations in year one — he represents strong value at this point in his career. The Vardy archetype is not hyperbole; it is a useful frame for what he might become with the right structure around him.
+    <br><br>
+    <em>Right-footed box finisher generating consistent goal output through penalty-area positioning, combining well above-average clinical efficiency with exceptional professional mentality and above-average defensive contribution for the position.</em>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="report-footer">
+  <span>Data: Wyscout / InStat &middot; 43 appearances &middot; 3,082 min &middot; Norway Obos Ligaen 2024/25</span>
+  <span>Report by Ask Hundhammer Christiansen &middot; March 2026</span>
+</div>
+  </div>
+</div>
+
+<script>
+function showTab(tab) {
+  var isDash = tab === 'dashboard';
+  document.getElementById('view-dashboard').style.display = isDash ? 'block' : 'none';
+  document.getElementById('view-report').style.display = isDash ? 'none' : 'block';
+  var btns = document.querySelectorAll('.tab-btn');
+  btns[0].classList.toggle('active', isDash);
+  btns[1].classList.toggle('active', !isDash);
+  window.scrollTo(0, 0);
+}
+</script>
+
 </body>
 </html>
