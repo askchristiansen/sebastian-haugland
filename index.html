@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sebastian Haugland – Scouting Report</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        body { font-family: 'Inter', system_ui, sans-serif; }
+
+        .stat-number {
+            font-size: 3rem;
+            line-height: 1;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #0f172a, #1e2937);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-4px);
+            transition: 0.2s;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-950 text-slate-200">
+
+<div class="max-w-6xl mx-auto px-6 py-12">
+
+    <!-- HEADER -->
+    <div class="flex flex-col md:flex-row justify-between items-start mb-12 gap-8">
+        <div>
+            <h1 class="text-6xl font-bold tracking-tighter">Sebastian Haugland</h1>
+            <p class="text-3xl text-emerald-400 mt-2">Centre Forward • IL Hødd</p>
+
+            <div class="flex flex-wrap gap-3 mt-6">
+                <span class="px-5 py-2 bg-emerald-900/50 text-emerald-300 rounded-2xl text-sm font-medium">
+                    29 år • 176 cm • Høyre
+                </span>
+
+                <span class="px-5 py-2 bg-amber-900/50 text-amber-300 rounded-2xl text-sm font-medium">
+                    Late Bloomer • Low-volume / high-efficiency striker
+                </span>
+
+                <span class="px-5 py-2 bg-slate-800 rounded-2xl text-sm font-medium">
+                    17 mål (43 kamper)
+                </span>
+            </div>
+        </div>
+
+        <div class="text-right">
+            <div class="uppercase text-xs tracking-[2px] text-slate-400">SCOUT REPORT • 2026</div>
+            <div class="text-[5.5rem] leading-none font-bold text-emerald-400 mt-2">8.4</div>
+            <div class="text-slate-400">OBOS nivå</div>
+        </div>
+    </div>
+
+    <!-- KEY STATS -->
+    <div class="highlight rounded-3xl p-10 mb-16 grid grid-cols-2 md:grid-cols-4 gap-10 text-center">
+
+        <div>
+            <div class="text-emerald-400 text-sm tracking-widest">MÅL / 90</div>
+            <div class="stat-number text-white">0.50</div>
+            <div class="text-xs text-emerald-300">+0.20 vs xG</div>
+        </div>
+
+        <div>
+            <div class="text-emerald-400 text-sm tracking-widest">DUELLER / 90</div>
+            <div class="stat-number text-white">11.2</div>
+        </div>
+
+        <div>
+            <div class="text-emerald-400 text-sm tracking-widest">TOUCHES I BOKS</div>
+            <div class="stat-number text-white">13.4</div>
+        </div>
+
+        <div>
+            <div class="text-emerald-400 text-sm tracking-widest">RECOVERIES</div>
+            <div class="stat-number text-white">3.9</div>
+        </div>
+
+    </div>
+
+    <!-- HEATMAP -->
+    <div class="mb-16">
+        <h2 class="text-3xl font-semibold mb-6">Heatmap – Aktivitetsprofil</h2>
+
+        <div class="bg-slate-900 rounded-3xl overflow-hidden border border-slate-700 card-hover">
+            <img src="heatmap.png" class="w-full">
+
+            <div class="p-6 text-sm text-slate-300 border-t border-slate-700 bg-slate-950">
+                Haugland opererer nesten utelukkende i og rundt straffefeltet, med tydelig tyngde på høyre side av boksen.
+                Dette indikerer en spiss som angriper bakre stolpe og posisjonerer seg konsekvent i avslutningssoner.
+
+                Minimal involvering i dypere soner bekrefter en ren box-striker profil, snarere enn en link-up spiller.
+            </div>
+        </div>
+    </div>
+
+    <!-- DATA INSIGHT -->
+    <div class="bg-slate-900 rounded-3xl p-8 mb-16 card-hover">
+        <h3 class="text-purple-400 text-lg font-medium mb-4">Data Insight</h3>
+
+        <p class="text-slate-300">
+            Differansen mellom mål og expected goals (+6.6) er det mest avgjørende datapunktet.
+            Dette indikerer at produksjonen i stor grad er drevet av avslutningsevne fremfor volum av sjanser.
+
+            Det sentrale vurderingspunktet er hvorvidt denne effektiviteten er bærekraftig,
+            eller representerer en peak-periode.
+        </p>
+    </div>
+
+    <!-- RADAR -->
+    <div class="mb-16">
+        <h2 class="text-3xl font-semibold mb-6">Profil vs OBOS-spisser</h2>
+
+        <div class="bg-slate-900 rounded-3xl p-8 card-hover">
+            <canvas id="radarChart"></canvas>
+        </div>
+    </div>
+
+    <!-- KONKLUSJON -->
+    <div class="text-center max-w-2xl mx-auto mt-20">
+
+        <h2 class="text-4xl font-bold mb-4">
+            Efficient, role-dependent striker
+        </h2>
+
+        <p class="text-xl text-slate-300">
+            Haugland fremstår som en effektiv avslutter med lavt sjansevolum.
+            Produksjonen er i stor grad avhengig av struktur og tilrettelegging fra laget.
+
+            Prosjekteres best som en rollebasert spiss i et strukturert angrepssystem,
+            heller enn som en primær offensiv drivkraft.
+        </p>
+
+    </div>
+
+</div>
+
+<script>
+const ctx = document.getElementById('radarChart');
+
+new Chart(ctx, {
+    type: 'radar',
+    data: {
+        labels: [
+            'Finishing',
+            'Efficiency',
+            'Duels',
+            'Recoveries',
+            'Box Presence',
+            'Dribbling',
+            'Pressing',
+            'Passing'
+        ],
+        datasets: [
+            {
+                label: 'Haugland',
+                data: [85, 90, 80, 75, 88, 60, 78, 65],
+                backgroundColor: 'rgba(16,185,129,0.3)',
+                borderColor: '#10b981',
+                borderWidth: 2
+            },
+            {
+                label: 'OBOS snitt',
+                data: [65, 50, 60, 55, 65, 50, 55, 58],
+                backgroundColor: 'rgba(148,163,184,0.1)',
+                borderColor: '#94a3b8',
+                borderDash: [4,3]
+            }
+        ]
+    },
+    options: {
+        plugins: {
+            legend: {
+                labels: { color: '#e2e8f0' }
+            }
+        },
+        scales: {
+            r: {
+                grid: { color: '#334155' },
+                angleLines: { color: '#334155' },
+                pointLabels: { color: '#cbd5e1' },
+                ticks: { display: false }
+            }
+        }
+    }
+});
+</script>
+
+</body>
+</html>
