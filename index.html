@@ -7,14 +7,14 @@
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 body { font-family: 'Inter', sans-serif; }
-.stat { font-size: 3rem; font-weight: 700; }
-.card { transition: 0.2s; }
-.card:hover { transform: translateY(-5px); }
+.card { transition: 0.25s; }
+.card:hover { transform: translateY(-6px); }
+.stat { font-size: 2.8rem; font-weight: 700; }
 </style>
 </head>
 
@@ -23,104 +23,111 @@ body { font-family: 'Inter', sans-serif; }
 <div id="report" class="max-w-6xl mx-auto px-6 py-12">
 
 <!-- HEADER -->
-<div class="flex justify-between mb-12">
+<div class="flex flex-col md:flex-row justify-between mb-12">
 <div>
 <h1 class="text-6xl font-bold">Sebastian Haugland</h1>
-<p class="text-2xl text-emerald-400 mt-2">Centre Forward • IL Hødd</p>
+<p class="text-3xl text-emerald-400 mt-2">Centre Forward • IL Hødd</p>
 
 <p class="mt-4 text-slate-400 max-w-xl">
-Low-volume striker producing strong output through efficiency, positioning, and physical dominance.
+Low-volume, high-efficiency striker combining penalty box presence, physical dominance, and strong pressing output.
 </p>
-
 </div>
 
 <div class="text-right">
-<div class="text-xs uppercase text-slate-400">Scout Report</div>
+<div class="text-xs uppercase text-slate-400">Scout Report • 2026</div>
 <div class="text-6xl text-emerald-400 font-bold">8.4</div>
 <div class="text-slate-400">OBOS Level</div>
 </div>
 </div>
 
-<!-- STATS -->
-<div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center mb-16 bg-slate-900 p-8 rounded-3xl">
-
-<div>
-<div class="text-xs text-emerald-400">GOALS / 90</div>
-<div class="stat">0.50</div>
+<!-- KEY STATS -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center bg-slate-900 p-8 rounded-3xl mb-16">
+<div><div class="text-xs text-emerald-400">Goals/90</div><div class="stat">0.50</div></div>
+<div><div class="text-xs text-emerald-400">xG/90</div><div class="stat">0.30</div></div>
+<div><div class="text-xs text-emerald-400">Duels Won</div><div class="stat">11.2</div></div>
+<div><div class="text-xs text-emerald-400">Recoveries</div><div class="stat">3.9</div></div>
 </div>
 
-<div>
-<div class="text-xs text-emerald-400">xG / 90</div>
-<div class="stat">0.30</div>
-</div>
+<!-- INTRO -->
+<div class="max-w-3xl mb-16">
+<p class="text-lg text-slate-300 leading-relaxed">
+Haugland’s profile is defined by efficiency rather than volume. He produces consistent goal output despite relatively low chance generation, driven by positioning, timing, and physical presence inside the penalty area.
 
-<div>
-<div class="text-xs text-emerald-400">DUELS WON</div>
-<div class="stat">11.2</div>
-</div>
-
-<div>
-<div class="text-xs text-emerald-400">RECOVERIES</div>
-<div class="stat">3.9</div>
-</div>
-
-</div>
-
-<!-- TEXT -->
-<div class="mb-12 max-w-3xl">
-<p class="text-lg text-slate-300">
-Haugland’s profile is defined by efficiency rather than volume. 
-He generates relatively few chances compared to league strikers, but converts at a significantly higher rate.
-
-This creates a profile that is impactful but sensitive to finishing variance.
+This creates a profile that is impactful, but also dependent on finishing efficiency rather than repeatable shot volume.
 </p>
 </div>
 
 <!-- HEATMAP -->
 <div class="mb-16">
-<h2 class="text-2xl mb-4">Movement & Positioning</h2>
+<h2 class="text-3xl mb-4">Movement Profile</h2>
+<img src="heatmap.png" class="rounded-xl mb-4">
 
-<img src="heatmap.png" class="rounded-xl">
+<p class="text-slate-300">
+The heatmap shows clear concentration inside the penalty area, particularly on the right side. 
 
-<p class="mt-4 text-slate-300">
-The heatmap shows strong concentration inside the penalty area, particularly on the right side.
+Haugland operates almost exclusively in finishing zones, attacking crosses and second balls. He rarely drops into build-up, indicating a pure box-striker profile focused on end-product actions rather than ball progression.
+</p>
+</div>
 
-Haugland operates almost exclusively in finishing zones, attacking crosses and second balls rather than dropping into build-up phases.
+<!-- ATTACKING -->
+<div class="card bg-slate-900 p-8 rounded-3xl mb-12">
+<h3 class="text-orange-400 mb-4">Attacking Output</h3>
+
+<p>
+17 goals from ~10.4 xG (+6.6) indicates strong finishing efficiency. However, his xG per 90 (~0.30) is below most top strikers, confirming limited chance volume.
+
+He is not a creator or volume shooter — he is a finisher operating within defined attacking structures.
 </p>
 </div>
 
 <!-- DEFENSIVE -->
-<div class="card bg-slate-900 p-8 rounded-3xl mb-16">
+<div class="card bg-slate-900 p-8 rounded-3xl mb-12">
 <h3 class="text-blue-400 mb-4">Defensive & Pressing Impact</h3>
 
-<p class="text-slate-300">
-With 11.2 duels won per 90 and 3.9 recoveries in the opponent’s half, Haugland provides above-average defensive contribution for a striker.
+<p>
+Haugland’s defensive contribution is a major strength. 
 
-He functions effectively as a pressing forward, contributing to regaining possession and disrupting build-up.
+Winning 11.2 duels per 90 and registering 3.9 recoveries in the opponent’s half places him well above average for strikers. He presses aggressively and contributes consistently in regaining possession, making him suitable for high-intensity systems.
 </p>
 </div>
 
 <!-- TEAM CONTEXT -->
-<div class="card bg-slate-900 p-8 rounded-3xl mb-16">
-<h3 class="text-emerald-400 mb-4">Team Context & Transferability</h3>
+<div class="card bg-slate-900 p-8 rounded-3xl mb-12">
+<h3 class="text-emerald-400 mb-4">Team Context</h3>
 
-<p class="text-slate-300">
-Haugland produced consistent output across two different environments.
+<p>
+Haugland maintained output across two different environments.
 
-At Åsane, he played in a direct, lower-possession system.
-At Hødd, he entered a more structured attacking setup.
+At Åsane, he played in a more direct, lower-possession system. At Hødd, he transitioned into a more structured attacking setup.
 
-His output remained stable, indicating a transferable profile not tied to a single system.
+The stability in output suggests a transferable profile that is not dependent on a single tactical structure.
+</p>
+</div>
+
+<!-- TACTICAL FIT -->
+<div class="card bg-slate-900 p-8 rounded-3xl mb-12">
+<h3 class="text-emerald-400 mb-4">Tactical Fit</h3>
+
+<p>
+Best suited for:
+<br>– High-crossing teams
+<br>– Structured attacking systems
+<br>– High pressing environments
+
+<br><br>
+Less suited for:
+<br>– Possession-heavy systems requiring link-up play
+<br>– Teams relying on striker-led progression
 </p>
 </div>
 
 <!-- RADAR -->
 <div class="mb-16">
-<h2 class="text-2xl mb-4">Profile</h2>
+<h2 class="text-2xl mb-4">Profile Overview</h2>
 <canvas id="radarChart"></canvas>
 
-<p class="text-xs text-slate-500 mt-4">
-Comparison uses dataset-based reference values and is intended for profiling, not exact benchmarking.
+<p class="text-xs text-slate-500 mt-3">
+Reference values are illustrative for profile comparison, not statistical benchmarks.
 </p>
 </div>
 
@@ -128,24 +135,36 @@ Comparison uses dataset-based reference values and is intended for profiling, no
 <div class="card bg-slate-900 p-8 rounded-3xl mb-16">
 <h3 class="text-emerald-400 mb-4">Projection</h3>
 
-<p class="text-slate-300">
+<p>
 Projects as a role-dependent striker at a higher level.
 
 Expected:
-– 8–12 goals per season  
-– Strong pressing contribution  
-– Effective in structured attacking systems  
+<br>– 8–12 goals per season
+<br>– Strong defensive contribution
+<br>– Effective in structured systems
 
+<br><br>
 Risk: output is highly dependent on finishing efficiency.
+</p>
+</div>
+
+<!-- CONCLUSION -->
+<div class="text-center max-w-3xl mx-auto">
+<h2 class="text-4xl font-bold mb-6">Efficient, high-impact striker</h2>
+
+<p class="text-xl text-slate-300">
+Haugland provides goal output, physical presence, and defensive contribution. He does not drive attacking volume, but he converts efficiently and fits well into structured, high-intensity systems.
+
+His value lies in role execution rather than offensive creation.
 </p>
 </div>
 
 </div>
 
-<!-- BUTTON -->
-<div class="text-center mb-20">
+<!-- PDF BUTTON -->
+<div class="text-center mt-12">
 <button onclick="downloadPDF()" class="bg-emerald-500 text-black px-6 py-3 rounded-xl font-bold">
-Download PDF
+Download PDF (Text Version)
 </button>
 </div>
 
@@ -153,24 +172,22 @@ Download PDF
 new Chart(document.getElementById("radarChart"), {
 type: "radar",
 data: {
-labels: ["Finishing","Efficiency","Duels","Recoveries","Box Presence","Pressing"],
+labels: ["Finishing","Efficiency","Duels","Pressing","Box Presence","Passing"],
 datasets: [{
-label: "Haugland",
-data: [88,92,85,80,87,82],
+data: [88,92,85,82,87,65],
 borderColor: "#10b981"
 }]
 }
 });
 
 function downloadPDF(){
-const element = document.getElementById("report");
+const { jsPDF } = window.jspdf;
+const doc = new jsPDF();
 
-html2pdf().from(element).set({
-margin: 0.5,
-filename: "Haugland_Report.pdf",
-html2canvas: { scale: 2 },
-jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-}).save();
+doc.text("Sebastian Haugland – Scouting Report", 10, 10);
+doc.text("Efficient, role-dependent striker profile.", 10, 20);
+
+doc.save("Haugland_Report.pdf");
 }
 </script>
 
