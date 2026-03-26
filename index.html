@@ -11,22 +11,24 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-        body { font-family: 'Inter', system_ui, sans-serif; }
+        body { font-family: 'Inter', system-ui, sans-serif; }
 
         .stat-number {
-            font-size: 3rem;
-            line-height: 1;
+            font-size: 3.3rem;
             font-weight: 700;
-            letter-spacing: -1px;
+            letter-spacing: -2px;
         }
 
         .highlight {
             background: linear-gradient(135deg, #0f172a, #1e2937);
         }
 
-        .card-hover:hover {
-            transform: translateY(-4px);
-            transition: 0.2s;
+        .card {
+            transition: all 0.25s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
         }
     </style>
 </head>
@@ -41,35 +43,31 @@
             <h1 class="text-6xl font-bold tracking-tighter">Sebastian Haugland</h1>
             <p class="text-3xl text-emerald-400 mt-2">Centre Forward • IL Hødd</p>
 
+            <p class="text-lg text-slate-400 mt-4 max-w-xl">
+                A low-volume striker producing strong output through finishing efficiency rather than chance generation.
+            </p>
+
             <div class="flex flex-wrap gap-3 mt-6">
-                <span class="px-5 py-2 bg-emerald-900/50 text-emerald-300 rounded-2xl text-sm font-medium">
-                    29 år • 176 cm • Høyre
-                </span>
-
-                <span class="px-5 py-2 bg-amber-900/50 text-amber-300 rounded-2xl text-sm font-medium">
-                    Late Bloomer • Low-volume / high-efficiency striker
-                </span>
-
-                <span class="px-5 py-2 bg-slate-800 rounded-2xl text-sm font-medium">
-                    17 mål (43 kamper)
-                </span>
+                <span class="px-5 py-2 bg-emerald-900/60 text-emerald-300 rounded-2xl text-sm">29 år • 176 cm • Høyre fot</span>
+                <span class="px-5 py-2 bg-amber-900/60 text-amber-300 rounded-2xl text-sm">Late Bloomer • High-efficiency finisher</span>
+                <span class="px-5 py-2 bg-slate-800 rounded-2xl text-sm">17 mål (43 kamper)</span>
             </div>
         </div>
 
         <div class="text-right">
-            <div class="uppercase text-xs tracking-[2px] text-slate-400">SCOUT REPORT • 2026</div>
-            <div class="text-[5.5rem] leading-none font-bold text-emerald-400 mt-2">8.4</div>
+            <div class="uppercase text-xs tracking-widest text-slate-400">SCOUT REPORT • 2026</div>
+            <div class="text-[5.8rem] font-bold text-emerald-400 mt-1">8.4</div>
             <div class="text-slate-400">OBOS nivå</div>
         </div>
     </div>
 
     <!-- KEY STATS -->
-    <div class="highlight rounded-3xl p-10 mb-16 grid grid-cols-2 md:grid-cols-4 gap-10 text-center">
+    <div class="highlight rounded-3xl p-10 mb-16 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
 
         <div>
             <div class="text-emerald-400 text-sm tracking-widest">MÅL / 90</div>
             <div class="stat-number text-white">0.50</div>
-            <div class="text-xs text-emerald-300">+0.20 vs xG</div>
+            <div class="text-xs text-emerald-300">+6.6 vs xG</div>
         </div>
 
         <div>
@@ -93,28 +91,30 @@
     <div class="mb-16">
         <h2 class="text-3xl font-semibold mb-6">Heatmap – Aktivitetsprofil</h2>
 
-        <div class="bg-slate-900 rounded-3xl overflow-hidden border border-slate-700 card-hover">
+        <div class="bg-slate-900 rounded-3xl overflow-hidden border border-slate-700 card">
             <img src="heatmap.png" class="w-full">
 
-            <div class="p-6 text-sm text-slate-300 border-t border-slate-700 bg-slate-950">
+            <div class="p-6 text-slate-300 bg-slate-950 border-t border-slate-700 leading-relaxed">
                 Haugland opererer nesten utelukkende i og rundt straffefeltet, med tydelig tyngde på høyre side av boksen.
-                Dette indikerer en spiss som angriper bakre stolpe og posisjonerer seg konsekvent i avslutningssoner.
+                Han posisjonerer seg konsekvent i avslutningssoner og angriper innlegg og andreballer.
 
-                Minimal involvering i dypere soner bekrefter en ren box-striker profil, snarere enn en link-up spiller.
+                Minimal involvering i dypere soner bekrefter en ren box-striker profil, snarere enn en spiller som driver angrep eller skaper sjanser selv.
             </div>
         </div>
     </div>
 
     <!-- DATA INSIGHT -->
-    <div class="bg-slate-900 rounded-3xl p-8 mb-16 card-hover">
+    <div class="bg-slate-900 rounded-3xl p-8 mb-16 card">
         <h3 class="text-purple-400 text-lg font-medium mb-4">Data Insight</h3>
 
-        <p class="text-slate-300">
+        <p class="text-slate-300 leading-relaxed">
             Differansen mellom mål og expected goals (+6.6) er det mest avgjørende datapunktet.
-            Dette indikerer at produksjonen i stor grad er drevet av avslutningsevne fremfor volum av sjanser.
+            Produksjonen er i stor grad drevet av avslutningsevne fremfor volum av sjanser.
 
-            Det sentrale vurderingspunktet er hvorvidt denne effektiviteten er bærekraftig,
-            eller representerer en peak-periode.
+            Profilen er derfor effektivitetdrevet, ikke volumdrevet, noe som gjør output mer sensitiv for variasjon.
+
+            A normalization toward expected goals would likely reduce overall production,
+            introducing a degree of volatility in the scoring profile.
         </p>
     </div>
 
@@ -122,25 +122,30 @@
     <div class="mb-16">
         <h2 class="text-3xl font-semibold mb-6">Profil vs OBOS-spisser</h2>
 
-        <div class="bg-slate-900 rounded-3xl p-8 card-hover">
+        <div class="bg-slate-900 rounded-3xl p-8 card">
             <canvas id="radarChart"></canvas>
         </div>
     </div>
 
-    <!-- KONKLUSJON -->
-    <div class="text-center max-w-2xl mx-auto mt-20">
+    <!-- CONCLUSION -->
+    <div class="text-center max-w-3xl mx-auto mt-20">
 
-        <h2 class="text-4xl font-bold mb-4">
+        <h2 class="text-4xl font-bold mb-6">
             Efficient, role-dependent striker
         </h2>
 
-        <p class="text-xl text-slate-300">
-            Haugland fremstår som en effektiv avslutter med lavt sjansevolum.
-            Produksjonen er i stor grad avhengig av struktur og tilrettelegging fra laget.
+        <p class="text-xl text-slate-300 leading-relaxed">
+            Sebastian Haugland fremstår som en lavvolum-spiss med høy effektivitet foran mål.
+            Produksjonen er i stor grad avhengig av posisjonering og avslutningsevne, heller enn evne til å skape egne sjanser.
 
-            Prosjekteres best som en rollebasert spiss i et strukturert angrepssystem,
-            heller enn som en primær offensiv drivkraft.
+            Han har vist stabil output på tvers av lag, men profilen tilsier at produksjonen kan variere dersom avslutningseffektiviteten normaliseres.
+
+            Prosjekteres best som en rollebasert spiss i et strukturert angrepssystem, snarere enn som en primær offensiv drivkraft.
         </p>
+
+        <div class="mt-6 text-sm text-slate-400">
+            Primary risk: Output regression if finishing efficiency declines.
+        </div>
 
     </div>
 
@@ -154,7 +159,7 @@ new Chart(ctx, {
     data: {
         labels: [
             'Finishing',
-            'Efficiency',
+            'Finishing Efficiency',
             'Duels',
             'Recoveries',
             'Box Presence',
@@ -166,16 +171,16 @@ new Chart(ctx, {
             {
                 label: 'Haugland',
                 data: [85, 90, 80, 75, 88, 60, 78, 65],
-                backgroundColor: 'rgba(16,185,129,0.3)',
+                backgroundColor: 'rgba(16,185,129,0.25)',
                 borderColor: '#10b981',
-                borderWidth: 2
+                borderWidth: 3
             },
             {
                 label: 'OBOS snitt',
-                data: [65, 50, 60, 55, 65, 50, 55, 58],
-                backgroundColor: 'rgba(148,163,184,0.1)',
+                data: [65, 55, 60, 55, 65, 50, 55, 60],
+                backgroundColor: 'rgba(148,163,184,0.15)',
                 borderColor: '#94a3b8',
-                borderDash: [4,3]
+                borderDash: [3,2]
             }
         ]
     },
