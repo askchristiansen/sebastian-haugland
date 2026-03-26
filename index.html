@@ -6,7 +6,7 @@
 <title>Sebastian Haugland – Scouting Report</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
@@ -21,14 +21,15 @@ body { font-family: Inter, sans-serif; background:#020617; color:#e2e8f0;}
 <div class="max-w-5xl mx-auto px-6 py-12">
 
 <!-- HEADER -->
-<h1 class="text-5xl font-bold">Sebastian Haugland</h1>
-<p class="text-emerald-400 text-2xl">Centre Forward • IL Hødd</p>
+<h1 class="text-6xl font-bold">Sebastian Haugland</h1>
+<p class="text-emerald-400 text-2xl">Centre Forward • IL Hødd (OBOS Ligaen)</p>
 
 <!-- KEY STATS -->
 <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-10">
 <div class="card text-center">
 <div>Goals / 90</div>
 <div class="stat-number">0.50</div>
+<div class="text-emerald-300 text-sm">+6.6 over xG</div>
 </div>
 
 <div class="card text-center">
@@ -37,22 +38,25 @@ body { font-family: Inter, sans-serif; background:#020617; color:#e2e8f0;}
 </div>
 
 <div class="card text-center">
-<div>Duels</div>
+<div>Duels Won / 90</div>
 <div class="stat-number">11.2</div>
 </div>
 
 <div class="card text-center">
-<div>Recoveries</div>
+<div>Recoveries Opp. Half / 90</div>
 <div class="stat-number">3.9</div>
 </div>
 </div>
 
 <!-- TEXT -->
-<div class="mt-12 text-slate-300 leading-relaxed">
-<p>
-High-efficiency striker profile. Output driven by finishing rather than volume.
-Adds value through pressing and duels.
-</p>
+<div class="mt-12 text-slate-300 leading-relaxed space-y-6">
+<p>Haugland profiles as a high-efficiency centre forward with above-average physical and defensive contribution relative to his position.</p>
+
+<p>17 goals from ~10.4 xG (+6.6). Low xG volume confirms finisher profile rather than creator.</p>
+
+<p>11.2 duels and 3.9 recoveries per 90 indicate high pressing involvement and physical impact.</p>
+
+<p>Consistent output across Åsane and Hødd suggests adaptability.</p>
 </div>
 
 <!-- HEATMAP -->
@@ -63,14 +67,14 @@ Adds value through pressing and duels.
 
 <!-- RADAR -->
 <div class="mt-12 card">
-<h3 class="text-xl mb-4">Attribute Profile</h3>
+<h3 class="text-xl mb-4">Attribute Profile vs OBOS Strikers</h3>
 <canvas id="radarChart"></canvas>
 </div>
 
-<!-- BUTTON -->
-<div class="text-center mt-12">
-<button onclick="generatePDF()" class="bg-emerald-500 px-6 py-3 rounded-xl text-black">
-Download PDF
+<!-- DOWNLOAD -->
+<div class="text-center mt-16">
+<button onclick="generatePDF()" class="bg-emerald-500 hover:bg-emerald-600 text-black px-8 py-4 rounded-2xl">
+Download Full Scout Report as PDF
 </button>
 </div>
 
@@ -78,11 +82,11 @@ Download PDF
 
 <script>
 
-// ✅ RADAR (FIXED)
+// ✅ RADAR (DETTE VAR PROBLEMET DITT)
 const radarChart = new Chart(document.getElementById("radarChart"), {
 type: "radar",
 data: {
-labels: ["Finishing","xG Efficiency","Duels","Recoveries","Box","Dribbling","Pressing","Passing"],
+labels: ["Finishing","xG Efficiency","Duels","Recoveries","Box Presence","Dribbling","Pressing","Passing"],
 datasets: [
 {
 label: "Haugland",
@@ -92,7 +96,7 @@ borderColor: "#10b981",
 borderWidth: 3
 },
 {
-label: "Average",
+label: "OBOS Avg",
 data: [65,55,62,55,68,55,60,60],
 borderColor: "#94a3b8",
 borderDash: [3,2]
@@ -100,101 +104,69 @@ borderDash: [3,2]
 ]
 },
 options: {
-plugins: {
-legend: { labels: { color: "#e2e8f0" } }
+plugins:{
+legend:{labels:{color:"#e2e8f0"}}
 },
-scales: {
-r: {
-min: 0,
-max: 100,
-grid: { color: "#1e293b" },
-pointLabels: { color: "#cbd5e1" },
-ticks: { display: false }
+scales:{
+r:{
+min:0,
+max:100,
+grid:{color:"#1e293b"},
+pointLabels:{color:"#cbd5e1"},
+ticks:{display:false}
 }
 }
 }
 });
 
 
-// ✅ PDF FUNCTION (STABLE)
-function generatePDF() {
+// ✅ PDF (DETTE VAR DET SOM KNAKK)
+function generatePDF(){
 
 const { jsPDF } = window.jspdf;
 const doc = new jsPDF();
 
 let y = 20;
 
-const addSection = (title, text) => {
-doc.setFont("Helvetica","bold");
-doc.setFontSize(14);
-doc.text(title,20,y);
-y+=8;
-
-doc.setFont("Helvetica","normal");
-doc.setFontSize(11);
-
-const lines = doc.splitTextToSize(text,170);
-doc.text(lines,20,y);
-y += lines.length*6 + 10;
-};
-
-// HEADER
 doc.setFontSize(18);
 doc.text("Sebastian Haugland – Scouting Report",20,y);
 y+=10;
 
 doc.setFontSize(11);
-doc.text("Centre Forward • IL Hødd • March 2026",20,y);
+doc.text("Centre Forward • IL Hødd • OBOS Ligaen • March 2026",20,y);
 y+=15;
 
-// CONTENT
-addSection("Executive Summary",
-"High-efficiency striker. Finishing-driven output. Adds pressing value.");
+doc.text("Goals/90: 0.50 (+6.6 over xG)",20,y); y+=8;
+doc.text("xG/90: 0.30",20,y); y+=8;
+doc.text("Duels: 11.2",20,y); y+=8;
+doc.text("Recoveries: 3.9",20,y); y+=12;
 
-addSection("Metrics",
-"0.50 goals/90 | 0.30 xG/90 | 11.2 duels | 3.9 recoveries");
-
-// NEW PAGE (VISUALS)
+// ✅ NY SIDE (visuals)
 doc.addPage();
 
-// RADAR SAFE EXPORT
-let radarImage = null;
+// Radar FIX
 try {
-radarImage = radarChart.toBase64Image();
-} catch(e) {}
-
-if (radarImage) {
+const radarImage = radarChart.toBase64Image();
 doc.text("Attribute Profile",20,20);
 doc.addImage(radarImage,"PNG",15,30,180,120);
-}
+} catch(e){}
 
-// HEATMAP SAFE EXPORT
-const heatmap = document.getElementById("heatmapImg");
+// Heatmap FIX
+const img = document.getElementById("heatmapImg");
 
-if (heatmap && heatmap.complete) {
+if(img.complete){
 const canvas = document.createElement("canvas");
-canvas.width = heatmap.naturalWidth;
-canvas.height = heatmap.naturalHeight;
-canvas.getContext("2d").drawImage(heatmap,0,0);
+canvas.width = img.naturalWidth;
+canvas.height = img.naturalHeight;
+canvas.getContext("2d").drawImage(img,0,0);
 
-const img = canvas.toDataURL("image/png");
+const data = canvas.toDataURL("image/png");
 
 doc.text("Movement Profile",20,160);
-doc.addImage(img,"PNG",15,170,180,90);
+doc.addImage(data,"PNG",15,170,180,90);
 }
 
-// FINAL PAGE
-doc.addPage();
-y = 20;
-
-addSection("Projection",
-"8–13 goals at higher level depending on system.");
-
-addSection("Final Assessment",
-"Role striker. Efficiency-driven. System dependent.");
-
 doc.save("Haugland_Report.pdf");
-
 }
 
 </script>
