@@ -6,13 +6,13 @@
 <title>Sebastian Haugland – Scouting Report</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
 body { font-family: Inter, sans-serif; background:#020617; color:#e2e8f0;}
 .card { background:#0f172a; border-radius:20px; padding:28px;}
-.stat-number { font-size:2.8rem; font-weight:700;}
+.stat-number { font-size:2.9rem; font-weight:700;}
 </style>
 </head>
 
@@ -20,17 +20,55 @@ body { font-family: Inter, sans-serif; background:#020617; color:#e2e8f0;}
 
 <div class="max-w-5xl mx-auto px-6 py-12">
 
+<!-- HEADER -->
 <h1 class="text-5xl font-bold">Sebastian Haugland</h1>
 <p class="text-emerald-400 text-2xl">Centre Forward • IL Hødd</p>
 
+<!-- KEY STATS -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-10">
+<div class="card text-center">
+<div>Goals / 90</div>
+<div class="stat-number">0.50</div>
+</div>
+
+<div class="card text-center">
+<div>xG / 90</div>
+<div class="stat-number">0.30</div>
+</div>
+
+<div class="card text-center">
+<div>Duels</div>
+<div class="stat-number">11.2</div>
+</div>
+
+<div class="card text-center">
+<div>Recoveries</div>
+<div class="stat-number">3.9</div>
+</div>
+</div>
+
+<!-- TEXT -->
+<div class="mt-12 text-slate-300 leading-relaxed">
+<p>
+High-efficiency striker profile. Output driven by finishing rather than volume.
+Adds value through pressing and duels.
+</p>
+</div>
+
+<!-- HEATMAP -->
+<div class="mt-12 card">
+<h3 class="text-xl mb-4">Movement Profile</h3>
+<img id="heatmapImg" src="heatmap.png" class="w-full">
+</div>
+
 <!-- RADAR -->
-<div class="card mt-10">
-<h2 class="text-xl mb-4">Attribute Profile</h2>
+<div class="mt-12 card">
+<h3 class="text-xl mb-4">Attribute Profile</h3>
 <canvas id="radarChart"></canvas>
 </div>
 
 <!-- BUTTON -->
-<div class="mt-10 text-center">
+<div class="text-center mt-12">
 <button onclick="generatePDF()" class="bg-emerald-500 px-6 py-3 rounded-xl text-black">
 Download PDF
 </button>
@@ -42,42 +80,43 @@ Download PDF
 
 // ✅ RADAR (FIXED)
 const radarChart = new Chart(document.getElementById("radarChart"), {
-    type: "radar",
-    data: {
-        labels: ["Finishing","xG Efficiency","Duels","Recoveries","Box","Dribbling","Pressing","Passing"],
-        datasets: [
-            {
-                label: "Haugland",
-                data: [88,92,82,78,87,62,80,67],
-                borderColor: "#10b981",
-                backgroundColor: "rgba(16,185,129,0.3)"
-            },
-            {
-                label: "Average",
-                data: [65,55,62,55,68,55,60,60],
-                borderColor: "#94a3b8",
-                borderDash: [4,4]
-            }
-        ]
-    },
-    options: {
-        plugins: {
-            legend: { labels: { color:"#e2e8f0" } }
-        },
-        scales: {
-            r: {
-                min:0,
-                max:100,
-                grid:{ color:"#1e293b"},
-                pointLabels:{ color:"#cbd5e1"},
-                ticks:{ display:false}
-            }
-        }
-    }
+type: "radar",
+data: {
+labels: ["Finishing","xG Efficiency","Duels","Recoveries","Box","Dribbling","Pressing","Passing"],
+datasets: [
+{
+label: "Haugland",
+data: [88,92,82,78,87,62,80,67],
+backgroundColor: "rgba(16,185,129,0.25)",
+borderColor: "#10b981",
+borderWidth: 3
+},
+{
+label: "Average",
+data: [65,55,62,55,68,55,60,60],
+borderColor: "#94a3b8",
+borderDash: [3,2]
+}
+]
+},
+options: {
+plugins: {
+legend: { labels: { color: "#e2e8f0" } }
+},
+scales: {
+r: {
+min: 0,
+max: 100,
+grid: { color: "#1e293b" },
+pointLabels: { color: "#cbd5e1" },
+ticks: { display: false }
+}
+}
+}
 });
 
 
-// ✅ PDF (FULLY FIXED)
+// ✅ PDF FUNCTION (STABLE)
 function generatePDF() {
 
 const { jsPDF } = window.jspdf;
@@ -86,18 +125,17 @@ const doc = new jsPDF();
 let y = 20;
 
 const addSection = (title, text) => {
-    doc.setFont("Helvetica","bold");
-    doc.setFontSize(14);
-    doc.text(title,20,y);
-    y+=8;
+doc.setFont("Helvetica","bold");
+doc.setFontSize(14);
+doc.text(title,20,y);
+y+=8;
 
-    doc.setFont("Helvetica","normal");
-    doc.setFontSize(11);
+doc.setFont("Helvetica","normal");
+doc.setFontSize(11);
 
-    const lines = doc.splitTextToSize(text,170);
-    doc.text(lines,20,y);
-
-    y += lines.length*6 + 10;
+const lines = doc.splitTextToSize(text,170);
+doc.text(lines,20,y);
+y += lines.length*6 + 10;
 };
 
 // HEADER
@@ -111,46 +149,50 @@ y+=15;
 
 // CONTENT
 addSection("Executive Summary",
-"High-efficiency, low-volume striker. Output driven by finishing. Adds value through pressing and duels. Role-dependent at higher level.");
+"High-efficiency striker. Finishing-driven output. Adds pressing value.");
 
-addSection("Profile",
-"0.50 goals/90 from ~0.30 xG. Indicates strong finishing but low creation involvement.");
+addSection("Metrics",
+"0.50 goals/90 | 0.30 xG/90 | 11.2 duels | 3.9 recoveries");
 
-addSection("Strengths",
-"• Finishing\n• Positioning\n• Duels\n• Pressing");
-
-addSection("Weaknesses",
-"• Low volume\n• Limited link-up\n• Dependent on service");
-
-
-// NEW PAGE → VISUALS
+// NEW PAGE (VISUALS)
 doc.addPage();
 
 // RADAR SAFE EXPORT
-let radarImage;
+let radarImage = null;
 try {
-    radarImage = radarChart.toBase64Image();
-} catch(e) {
-    console.log("Radar fail", e);
-}
+radarImage = radarChart.toBase64Image();
+} catch(e) {}
 
 if (radarImage) {
-    doc.text("Attribute Profile",20,20);
-    doc.addImage(radarImage,"PNG",15,30,180,120);
+doc.text("Attribute Profile",20,20);
+doc.addImage(radarImage,"PNG",15,30,180,120);
 }
 
+// HEATMAP SAFE EXPORT
+const heatmap = document.getElementById("heatmapImg");
+
+if (heatmap && heatmap.complete) {
+const canvas = document.createElement("canvas");
+canvas.width = heatmap.naturalWidth;
+canvas.height = heatmap.naturalHeight;
+canvas.getContext("2d").drawImage(heatmap,0,0);
+
+const img = canvas.toDataURL("image/png");
+
+doc.text("Movement Profile",20,160);
+doc.addImage(img,"PNG",15,170,180,90);
+}
 
 // FINAL PAGE
 doc.addPage();
-y=20;
+y = 20;
 
 addSection("Projection",
-"8–13 goals at Eliteserien level depending on system.");
+"8–13 goals at higher level depending on system.");
 
 addSection("Final Assessment",
-"Role striker. Efficiency-driven output. Needs structure.");
+"Role striker. Efficiency-driven. System dependent.");
 
-// SAVE
 doc.save("Haugland_Report.pdf");
 
 }
