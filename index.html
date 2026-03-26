@@ -164,11 +164,13 @@ function generatePDF() {
 
         doc.setFont("Helvetica", "normal");
         doc.setFontSize(11);
-        const lines = doc.splitTextToSize(text, 172);
+
+        const lines = doc.splitTextToSize(text, 170);
         doc.text(lines, 20, y);
-        y += lines.length * 6.8 + 14;
+        y += lines.length * 7 + 12;   // Bedre spacing
     };
 
+    // HEADER
     doc.setFont("Helvetica", "bold");
     doc.setFontSize(18);
     doc.text("Sebastian Haugland – Scouting Report", 20, y);
@@ -177,11 +179,13 @@ function generatePDF() {
     doc.setFontSize(11);
     doc.setFont("Helvetica", "normal");
     doc.text("Centre Forward • IL Hødd • OBOS Ligaen • March 2026", 20, y);
-    y += 22;
+    y += 25;
 
+    // PROFILE
     addSection("Player Profile", 
     "Sebastian Haugland is a 29-year-old centre forward whose performance profile is characterized by high finishing efficiency combined with above-average physical and defensive contribution for his position.");
 
+    // KEY METRICS
     addSection("Key Performance Metrics",
     "Goals per 90: 0.50 (+6.6 over xG)\n" +
     "xG per 90: ~0.30\n" +
@@ -189,18 +193,23 @@ function generatePDF() {
     "Recoveries in opposition half per 90: 3.9\n" +
     "Touches in penalty area per 90: 13.4");
 
-    addSection("Attacking Analysis", 
+    // ATTACKING
+    addSection("Attacking Analysis",
     "Haugland has scored 17 goals from an estimated 10.4 xG (+6.6 overperformance). His relatively modest xG per 90 (~0.30) shows that he is not a high-volume chance creator, but rather a clinical finisher who capitalizes on quality opportunities through positioning and timing.");
 
-    addSection("Defensive & Physical Contribution", 
+    // DEFENSIVE
+    addSection("Defensive & Physical Contribution",
     "Haugland stands out with 11.2 duels won and 3.9 recoveries in the opposition half per 90 minutes. This defensive involvement is well above average for a centre forward and adds significant tactical value beyond goal scoring.");
 
-    addSection("Spatial Profile", 
+    // SPATIAL
+    addSection("Spatial Profile",
     "Heatmap data reveals a highly concentrated presence inside and around the penalty area, with a bias toward the right side. Minimal activity in deeper zones confirms a classic box-striker profile focused on end-product actions.");
 
-    addSection("Team Context", 
+    // TEAM CONTEXT
+    addSection("Team Context",
     "Haugland has maintained consistent output across Åsane (more direct style) and Hødd (more structured setup). This suggests a degree of tactical adaptability, although both environments have emphasized service into advanced areas.");
 
+    // STRENGTHS
     addSection("Strengths",
     "• Elite finishing efficiency relative to chance volume\n" +
     "• Strong penalty-box positioning and movement\n" +
@@ -208,24 +217,30 @@ function generatePDF() {
     "• Above-average pressing and defensive contribution\n" +
     "• Consistent performance across different tactical systems");
 
+    // WEAKNESSES
     addSection("Weaknesses",
     "• Low shot volume and limited chance creation\n" +
     "• Minimal involvement in build-up and link-up play\n" +
     "• Below-average passing and creativity\n" +
     "• Goal output is partially dependent on finishing efficiency");
 
-    addSection("Tactical Fit", 
-    "Best suited for structured attacking systems that generate frequent box entries and crosses. Less suited for possession-heavy systems that require extensive link-up play or striker-led progression.");
+    // TACTICAL FIT
+    addSection("Tactical Fit",
+    "Best suited for structured attacking systems that generate frequent box entries and crosses.\nLess suited for possession-heavy systems that require extensive link-up play or striker-led progression.");
 
-    addSection("Projection", 
+    // PROJECTION
+    addSection("Projection",
     "At 29 years of age, Haugland is projected to deliver 8–13 goals per season in the Eliteserien within a well-structured team. His defensive contribution provides additional value if finishing efficiency normalizes.");
 
-    addSection("Final Assessment", 
+    // FINAL ASSESSMENT
+    addSection("Final Assessment",
     "Haugland profiles as a high-efficiency, low-volume centre forward whose value is driven by finishing and defensive contribution rather than chance creation. His effectiveness is closely tied to team structure and the quality of service he receives in advanced areas.");
 
-    addSection("Data Limitations", 
+    // DATA LIMITATIONS
+    addSection("Data Limitations",
     "Analysis is based on 43 OBOS Ligaen matches. Performance may be influenced by team tactics and chance quality. Finishing overperformance is not always sustainable over longer periods.");
 
+    // FOOTER
     doc.setFontSize(10);
     doc.text("Report generated from available match data (2024–2025 season)", 20, 285);
 
