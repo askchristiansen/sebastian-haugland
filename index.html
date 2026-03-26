@@ -1,244 +1,1256 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sebastian Haugland – Scouting Report</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-        body { 
-            font-family: 'Inter', system_ui, sans-serif; 
-            background: #020617; 
-            color: #e2e8f0; 
-            line-height: 1.75;
-        }
-        .card { 
-            background: #0f172a; 
-            border-radius: 20px; 
-            padding: 28px; 
-        }
-        .stat-number { 
-            font-size: 2.95rem; 
-            font-weight: 700; 
-            letter-spacing: -1.5px; 
-        }
-        .highlight { 
-            background: linear-gradient(135deg, #0f172a, #1e2937); 
-        }
-        h2 { font-size: 1.8rem; font-weight: 600; margin-bottom: 1rem; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sebastian Haugland — Scouting Report 2024/25</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0a0c10;
+    --surface: #111318;
+    --surface2: #181c24;
+    --border: #222834;
+    --accent: #e8f033;
+    --accent2: #3be8b0;
+    --red: #ff4d6d;
+    --text: #f0f2f5;
+    --muted: #6b7280;
+    --asane: #3be8b0;
+    --hodd: #e8f033;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* HERO HEADER */
+  .hero {
+    position: relative;
+    padding: 0;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0a0c10 0%, #0f1520 50%, #0a0c10 100%);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 48px 0;
+    gap: 40px;
+  }
+
+  .hero-accent-line {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent) 0%, var(--accent2) 50%, transparent 100%);
+  }
+
+  .player-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(232, 240, 51, 0.08);
+    border: 1px solid rgba(232, 240, 51, 0.2);
+    border-radius: 4px;
+    padding: 6px 14px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .player-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .hero-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 10vw, 120px);
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .hero-name span {
+    color: var(--accent);
+  }
+
+  .hero-sub {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+  }
+
+  .hero-meta-row {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    padding-bottom: 40px;
+  }
+
+  .hero-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .hero-meta-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+  }
+
+  .hero-meta-value {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .hero-silhouette {
+    position: relative;
+    width: 180px;
+    flex-shrink: 0;
+    align-self: flex-end;
+  }
+
+  .jersey-graphic {
+    width: 160px;
+    height: 200px;
+    position: relative;
+    opacity: 0.9;
+  }
+
+  /* MAIN CONTENT */
+  .main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 48px 48px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* SECTION LABEL */
+  .section-label {
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* KEY STATS BAR */
+  .keystats {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 40px;
+  }
+
+  .keystat {
+    background: var(--surface);
+    padding: 28px 20px;
+    position: relative;
+    transition: background 0.2s;
+  }
+
+  .keystat:hover { background: var(--surface2); }
+
+  .keystat-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    line-height: 1;
+    color: var(--text);
+    letter-spacing: 0.02em;
+    margin-bottom: 4px;
+  }
+
+  .keystat-value.accent { color: var(--accent); }
+  .keystat-value.accent2 { color: var(--accent2); }
+
+  .keystat-label {
+    font-size: 11px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+  }
+
+  .keystat-sub {
+    font-size: 11px;
+    color: var(--accent2);
+    font-family: 'DM Mono', monospace;
+    margin-top: 6px;
+  }
+
+  /* GRID LAYOUT */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  .grid-left-wide {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  .grid-right-wide {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: transparent;
+    transition: background 0.3s;
+  }
+
+  .card:hover::before { background: var(--accent); }
+
+  .card-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-bottom: 20px;
+    font-weight: 500;
+  }
+
+  /* CHART CONTAINERS */
+  .chart-wrap {
+    position: relative;
+    width: 100%;
+  }
+
+  /* RADAR */
+  .radar-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+  }
+
+  /* STAT BARS */
+  .stat-bar-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .stat-bar-item {}
+
+  .stat-bar-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+
+  .stat-bar-name {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .stat-bar-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--text);
+  }
+
+  .stat-bar-track {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .stat-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--accent);
+    transition: width 1s ease;
+  }
+
+  .stat-bar-fill.accent2 { background: var(--accent2); }
+  .stat-bar-fill.red { background: var(--red); }
+
+  /* CLUB COMPARISON */
+  .club-compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .club-block {
+    padding: 20px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+  }
+
+  .club-block.asane { border-color: rgba(59, 232, 176, 0.3); background: rgba(59, 232, 176, 0.04); }
+  .club-block.hodd { border-color: rgba(232, 240, 51, 0.3); background: rgba(232, 240, 51, 0.04); }
+
+  .club-block-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    margin-bottom: 16px;
+  }
+
+  .club-block.asane .club-block-name { color: var(--asane); }
+  .club-block.hodd .club-block-name { color: var(--hodd); }
+
+  .club-stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+
+  .club-stat-row:last-child { border-bottom: none; }
+  .club-stat-row span:first-child { color: var(--muted); }
+  .club-stat-row span:last-child { font-family: 'DM Mono', monospace; font-weight: 500; }
+
+  /* MATCH LOG */
+  .match-log {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-height: 520px;
+    overflow-y: auto;
+  }
+
+  .match-log::-webkit-scrollbar { width: 4px; }
+  .match-log::-webkit-scrollbar-track { background: transparent; }
+  .match-log::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .match-row {
+    display: grid;
+    grid-template-columns: 90px 1fr auto auto auto auto;
+    gap: 12px;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+    transition: background 0.15s;
+  }
+
+  .match-row:hover { background: rgba(255,255,255,0.02); }
+  .match-row:last-child { border-bottom: none; }
+
+  .match-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .match-name {
+    color: var(--text);
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .match-mins {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .goal-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .goal-chip.scored {
+    background: rgba(232, 240, 51, 0.15);
+    color: var(--accent);
+    border: 1px solid rgba(232, 240, 51, 0.3);
+  }
+
+  .goal-chip.assist {
+    background: rgba(59, 232, 176, 0.1);
+    color: var(--accent2);
+    border: 1px solid rgba(59, 232, 176, 0.3);
+  }
+
+  .goal-chip.empty {
+    background: transparent;
+    color: transparent;
+    border: 1px solid var(--border);
+    opacity: 0.3;
+  }
+
+  .club-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .club-dot.asane { background: var(--asane); }
+  .club-dot.hodd { background: var(--hodd); }
+
+  /* SCOUTING TEXT */
+  .scouting-section {
+    margin-bottom: 16px;
+  }
+
+  .scouting-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+
+  .scouting-text {
+    font-size: 13.5px;
+    line-height: 1.75;
+    color: #b0b8c8;
+    font-weight: 300;
+  }
+
+  .scouting-text strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* RATING */
+  .rating-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .rating-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: var(--surface2);
+    border-radius: 6px;
+    border: 1px solid var(--border);
+  }
+
+  .rating-label {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .rating-score {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    line-height: 1;
+  }
+
+  .rating-score.s { color: #e8f033; }
+  .rating-score.a { color: #3be8b0; }
+  .rating-score.b { color: #60a5fa; }
+  .rating-score.c { color: #f97316; }
+
+  /* FOOTER */
+  .report-footer {
+    border-top: 1px solid var(--border);
+    padding: 24px 48px;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+  }
+
+  /* FORM DOTS */
+  .form-dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .form-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+  }
+
+  .form-dot.g { background: var(--accent); }
+  .form-dot.a { background: var(--accent2); }
+  .form-dot.n { background: var(--border); }
+
+  /* OVERPERFORMANCE */
+  .ovperf {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+  }
+
+  .ovperf-big {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    line-height: 1;
+    color: var(--accent);
+  }
+
+  .ovperf-label {
+    font-size: 11px;
+    color: var(--muted);
+    padding-bottom: 6px;
+  }
+
+  @media (max-width: 900px) {
+    .keystats { grid-template-columns: repeat(3, 1fr); }
+    .grid-2, .grid-3, .grid-left-wide, .grid-right-wide { grid-template-columns: 1fr; }
+    .main { padding: 32px 20px; }
+    .hero-grid { padding: 40px 20px 0; }
+    .report-footer { padding: 20px; flex-direction: column; gap: 12px; text-align: center; }
+    .match-row { grid-template-columns: 70px 1fr auto auto; }
+    .match-mins, .match-row > :nth-child(5) { display: none; }
+  }
+</style>
 </head>
 <body>
 
-<div class="max-w-5xl mx-auto px-6 py-12">
-
-    <!-- HEADER -->
-    <div class="flex flex-col md:flex-row justify-between items-start mb-12 gap-8">
-        <div>
-            <h1 class="text-6xl font-bold tracking-tighter">Sebastian Haugland</h1>
-            <p class="text-3xl text-emerald-400 mt-2">Centre Forward • IL Hødd (OBOS Ligaen)</p>
-            <div class="flex flex-wrap gap-3 mt-6">
-                <span class="px-5 py-2 bg-emerald-900/70 text-emerald-300 rounded-2xl text-sm font-medium">29 years • 176 cm • Right-footed</span>
-                <span class="px-5 py-2 bg-slate-800 rounded-2xl text-sm font-medium">Late Bloomer</span>
-            </div>
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-accent-line"></div>
+  <div class="hero-grid">
+    <div>
+      <div class="player-badge">Scouting Report · Norway Obos-ligaen</div>
+      <h1 class="hero-name">SEBASTIAN<br><span>HAUGLAND</span></h1>
+      <p class="hero-sub">Centre Forward &nbsp;·&nbsp; Born 2001 &nbsp;·&nbsp; Norway</p>
+      <div class="hero-meta-row">
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Current Club</span>
+          <span class="hero-meta-value">Hødd (2025–)</span>
         </div>
-        <div class="text-right">
-            <div class="uppercase text-xs tracking-widest text-slate-400">SCOUT REPORT • MARCH 2026</div>
-            <div class="text-[5.8rem] leading-none font-bold text-emerald-400 mt-1">8.4</div>
-            <div class="text-slate-400">OBOS Ligaen</div>
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Previous Club</span>
+          <span class="hero-meta-value">Åsane FK</span>
         </div>
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Competition</span>
+          <span class="hero-meta-value">Norway. Obos Ligaen</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Data Period</span>
+          <span class="hero-meta-value">Jul 2024 – Nov 2025</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Matches</span>
+          <span class="hero-meta-value">43 Appearances</span>
+        </div>
+      </div>
     </div>
-
-    <!-- KEY STATS -->
-    <div class="highlight rounded-3xl p-10 mb-16 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-        <div>
-            <div class="text-emerald-400 text-sm tracking-widest">GOALS / 90</div>
-            <div class="stat-number text-white">0.50</div>
-            <div class="text-xs text-emerald-300">+6.6 over xG</div>
-        </div>
-        <div>
-            <div class="text-emerald-400 text-sm tracking-widest">xG / 90</div>
-            <div class="stat-number text-white">0.30</div>
-        </div>
-        <div>
-            <div class="text-emerald-400 text-sm tracking-widest">DUELS WON / 90</div>
-            <div class="stat-number text-white">11.2</div>
-        </div>
-        <div>
-            <div class="text-emerald-400 text-sm tracking-widest">REC. OPP. HALF / 90</div>
-            <div class="stat-number text-white">3.9</div>
-        </div>
+    <div class="hero-silhouette">
+      <svg class="jersey-graphic" viewBox="0 0 160 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Jersey shape -->
+        <path d="M40 30 L20 55 L35 60 L32 150 L128 150 L125 60 L140 55 L120 30 L100 40 Q80 20 60 40 Z" fill="#181c24" stroke="#e8f033" stroke-width="1.5"/>
+        <!-- Number 9 -->
+        <text x="80" y="110" text-anchor="middle" font-family="Bebas Neue, sans-serif" font-size="48" fill="#e8f033" opacity="0.9">9</text>
+        <!-- Collar -->
+        <path d="M68 32 Q80 42 92 32" stroke="#e8f033" stroke-width="1.5" fill="none"/>
+        <!-- Shoulder lines -->
+        <line x1="40" y1="30" x2="32" y2="55" stroke="#e8f033" stroke-width="0.5" opacity="0.4"/>
+        <line x1="120" y1="30" x2="128" y2="55" stroke="#e8f033" stroke-width="0.5" opacity="0.4"/>
+        <!-- Shorts -->
+        <rect x="38" y="152" width="40" height="38" rx="2" fill="#111318" stroke="#333" stroke-width="1"/>
+        <rect x="82" y="152" width="40" height="38" rx="2" fill="#111318" stroke="#333" stroke-width="1"/>
+      </svg>
     </div>
+  </div>
+</div>
 
-    <!-- MAIN ANALYSIS -->
-    <div class="prose prose-invert max-w-none text-slate-300 leading-relaxed mb-16 space-y-8">
-        <p>Sebastian Haugland is a 29-year-old centre forward whose performance profile is characterized by high finishing efficiency combined with above-average physical and defensive contribution for his position. Across 43 OBOS Ligaen matches (3,082 minutes) for Åsane and Hødd, he has produced 17 goals, averaging 0.50 goals per 90 minutes. This output is supported by an estimated expected goals (xG) total of around 10.4, indicating a significant overperformance of +6.6 goals.</p>
+<!-- MAIN CONTENT -->
+<div class="main">
 
-        <p>From an attacking perspective, Haugland operates primarily as a penalty-box finisher rather than a volume shooter or creator. His relatively low xG per 90 (~0.30) indicates limited participation in chance creation, while his finishing output points to strong positioning, timing, and execution in high-value areas.</p>
-
-        <p>A notable strength is his defensive contribution. He records 11.2 duels won per 90 minutes and 3.9 recoveries in the opposition half — both well above average for a centre forward. This level of pressing intensity adds tactical value beyond goal scoring.</p>
-
-        <p>Haugland has maintained consistent output across two different environments at Åsane and Hødd. This suggests a degree of tactical adaptability.</p>
+  <!-- KEY STATS -->
+  <div class="section-label">Season Overview · 2024/25</div>
+  <div class="keystats" style="margin-bottom:40px;">
+    <div class="keystat">
+      <div class="keystat-value accent">17</div>
+      <div class="keystat-label">Goals</div>
+      <div class="keystat-sub">0.50 per 90'</div>
     </div>
+    <div class="keystat">
+      <div class="keystat-value">3</div>
+      <div class="keystat-label">Assists</div>
+      <div class="keystat-sub">0.09 per 90'</div>
+    </div>
+    <div class="keystat">
+      <div class="keystat-value accent2">10.41</div>
+      <div class="keystat-label">xG Total</div>
+      <div class="keystat-sub">+6.59 overperform</div>
+    </div>
+    <div class="keystat">
+      <div class="keystat-value">3082</div>
+      <div class="keystat-label">Minutes</div>
+      <div class="keystat-sub">43 apps · 34.3 avg</div>
+    </div>
+    <div class="keystat">
+      <div class="keystat-value">23.6%</div>
+      <div class="keystat-label">Conv. Rate</div>
+      <div class="keystat-sub">17 goals / 72 shots</div>
+    </div>
+    <div class="keystat">
+      <div class="keystat-value">44.4%</div>
+      <div class="keystat-label">Shot Acc.</div>
+      <div class="keystat-sub">32 on target</div>
+    </div>
+  </div>
 
-    <!-- HEATMAP -->
-    <div class="mb-16">
-        <h2 class="text-3xl font-semibold mb-6">Movement Profile</h2>
-        <div class="card overflow-hidden">
-            <img src="heatmap.png" class="w-full" alt="Sebastian Haugland Heatmap">
-            <div class="p-6 text-slate-300 bg-slate-950 border-t border-slate-700">
-                The heatmap shows a clear concentration of activity inside and around the penalty area, with a bias toward the right side. Haugland operates primarily as a box poacher focused on end-product actions rather than build-up participation.
-            </div>
+  <!-- ROW 1: Radar + Per90 bars -->
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Performance Radar — Per 90 Metrics</div>
+      <div class="radar-wrap">
+        <canvas id="radarChart" width="340" height="340"></canvas>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Key Metrics per 90 Minutes</div>
+      <div class="stat-bar-list">
+        <div class="stat-bar-item">
+          <div class="stat-bar-header">
+            <span class="stat-bar-name">Goals / 90</span>
+            <span class="stat-bar-val">0.50</span>
+          </div>
+          <div class="stat-bar-track"><div class="stat-bar-fill" style="width:83%"></div></div>
         </div>
-    </div>
-
-    <!-- RADAR -->
-    <div class="mb-16">
-        <h2 class="text-3xl font-semibold mb-6">Attribute Profile vs OBOS Strikers</h2>
-        <div class="card p-8">
-            <canvas id="radarChart" class="w-full h-96"></canvas>
+        <div class="stat-bar-item">
+          <div class="stat-bar-header">
+            <span class="stat-bar-name">xG / 90</span>
+            <span class="stat-bar-val">0.30</span>
+          </div>
+          <div class="stat-bar-track"><div class="stat-bar-fill" style="width:50%"></div></div>
         </div>
+        <div class="stat-bar-item">
+          <div class="stat-bar-header">
+            <span class="stat-bar-name">Shots / 90</span>
+            <span class="stat-bar-val">2.10</span>
+          </div>
+          <div class="stat-bar-track"><div class="stat-bar-fill" style="width:70%"></div></div>
+        </div>
+        <div class="stat-bar-item">
+          <div class="stat-bar-header">
+            <span class="stat-bar-name">Touches in Penalty Area / 90</span>
+            <span class="stat-bar-val">3.97</span>
+          </div>
+          <div class="stat-bar-track"><div class="stat-bar-fill accent2" style="width:66%"></div></div>
+        </div>
+        <div class="stat-bar-item">
+          <div class="stat-bar-header">
+            <span class="stat-bar-name">Dribble Success Rate</span>
+            <span class="stat-bar-val">55.0%</span>
+          </div>
+          <div class="stat-bar-track"><div class="stat-bar-fill accent2" style="width:55%"></div></div>
+        </div>
+        <div class="stat-bar-item">
+          <div class="stat-bar-header">
+            <span class="stat-bar-name">Pass Accuracy</span>
+            <span class="stat-bar-val">72.2%</span>
+          </div>
+          <div class="stat-bar-track"><div class="stat-bar-fill" style="width:72%"></div></div>
+        </div>
+        <div class="stat-bar-item">
+          <div class="stat-bar-header">
+            <span class="stat-bar-name">Aerial Duel Win Rate</span>
+            <span class="stat-bar-val">21.1%</span>
+          </div>
+          <div class="stat-bar-track"><div class="stat-bar-fill red" style="width:21%"></div></div>
+        </div>
+        <div class="stat-bar-item">
+          <div class="stat-bar-header">
+            <span class="stat-bar-name">Recoveries Opp. Half / 90</span>
+            <span class="stat-bar-val">1.11</span>
+          </div>
+          <div class="stat-bar-track"><div class="stat-bar-fill accent2" style="width:44%"></div></div>
+        </div>
+        <div class="stat-bar-item">
+          <div class="stat-bar-header">
+            <span class="stat-bar-name">Progressive Runs / 90</span>
+            <span class="stat-bar-val">0.96</span>
+          </div>
+          <div class="stat-bar-track"><div class="stat-bar-fill" style="width:48%"></div></div>
+        </div>
+        <div class="stat-bar-item">
+          <div class="stat-bar-header">
+            <span class="stat-bar-name">Shot Assists / 90</span>
+            <span class="stat-bar-val">0.41</span>
+          </div>
+          <div class="stat-bar-track"><div class="stat-bar-fill accent2" style="width:41%"></div></div>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <!-- DOWNLOAD -->
-    <div class="text-center mt-16">
-        <button onclick="generatePDF()" 
-                class="bg-emerald-500 hover:bg-emerald-600 text-black font-semibold px-8 py-4 rounded-2xl transition-colors text-lg">
-            Download Full Scout Report as PDF
-        </button>
+  <!-- ROW 2: Goals timeline -->
+  <div class="card" style="margin-bottom:20px;">
+    <div class="card-title">Goals &amp; xG Timeline — Per Match (Chronological)</div>
+    <div class="chart-wrap" style="height:220px;">
+      <canvas id="timelineChart"></canvas>
     </div>
+  </div>
+
+  <!-- ROW 3: Club comparison + Shots chart -->
+  <div class="grid-right-wide">
+    <div class="card">
+      <div class="card-title">Club Comparison</div>
+      <div class="club-compare">
+        <div class="club-block asane">
+          <div class="club-block-name">Åsane</div>
+          <div class="club-stat-row"><span>Apps</span><span>26</span></div>
+          <div class="club-stat-row"><span>Minutes</span><span>1,634</span></div>
+          <div class="club-stat-row"><span>Goals</span><span>9</span></div>
+          <div class="club-stat-row"><span>Assists</span><span>1</span></div>
+          <div class="club-stat-row"><span>G/90</span><span>0.50</span></div>
+          <div class="club-stat-row"><span>xG</span><span>6.03</span></div>
+          <div class="club-stat-row"><span>xG/90</span><span>0.33</span></div>
+          <div class="club-stat-row"><span>Shots</span><span>40</span></div>
+          <div class="club-stat-row"><span>Dribble%</span><span>65%</span></div>
+        </div>
+        <div class="club-block hodd">
+          <div class="club-block-name">Hødd</div>
+          <div class="club-stat-row"><span>Apps</span><span>17</span></div>
+          <div class="club-stat-row"><span>Minutes</span><span>1,448</span></div>
+          <div class="club-stat-row"><span>Goals</span><span>8</span></div>
+          <div class="club-stat-row"><span>Assists</span><span>2</span></div>
+          <div class="club-stat-row"><span>G/90</span><span>0.50</span></div>
+          <div class="club-stat-row"><span>xG</span><span>4.38</span></div>
+          <div class="club-stat-row"><span>xG/90</span><span>0.27</span></div>
+          <div class="club-stat-row"><span>Shots</span><span>32</span></div>
+          <div class="club-stat-row"><span>Dribble%</span><span>45%</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Goals vs xG — Cumulative Overperformance</div>
+      <div class="chart-wrap" style="height:280px;">
+        <canvas id="cumulChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW 4: Match log + Scouting report -->
+  <div class="grid-left-wide">
+    <div class="card">
+      <div class="card-title">Match Log — All Appearances</div>
+      <div class="match-log" id="matchLog"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Scouting Assessment</div>
+
+      <div class="scouting-section" style="margin-bottom:24px;">
+        <div class="scouting-title">✦ Profile Summary</div>
+        <p class="scouting-text">
+          Sebastian Haugland is a <strong>technically assured centre forward</strong> with elite finishing instincts relative to his competition level. Over 43 appearances across two clubs in the Norwegian Obos Ligaen, he has demonstrated a consistent goal-scoring output of <strong>0.50 goals per 90</strong> — a rate he has maintained equally at both Åsane and Hødd, suggesting a player whose output is driven by individual quality rather than team context.
+        </p>
+      </div>
+
+      <div class="scouting-section" style="margin-bottom:24px;">
+        <div class="scouting-title">✦ Finishing & Efficiency</div>
+        <p class="scouting-text">
+          His most striking attribute is a <strong>significant xG overperformance of +6.59</strong> over the data window — scoring 17 goals against an expected 10.41. A <strong>23.6% conversion rate</strong> places him well above average for the level. Shot accuracy of 44.4% reinforces that his attempts are well-placed rather than speculative. This suggests a forward with <strong>quality of contact, positioning in the box</strong>, and mental composure in front of goal.
+        </p>
+      </div>
+
+      <div class="scouting-section" style="margin-bottom:24px;">
+        <div class="scouting-title">✦ Areas for Development</div>
+        <p class="scouting-text">
+          The <strong>aerial duel win rate of 21.1%</strong> is below par for a central striker and may limit his effectiveness against physically dominant centre-backs at higher levels. Assist contribution is low (0.09/90), indicating <strong>limited link-up play or creation volume</strong>. xA of 0.04/90 also confirms he is primarily a penalty-area finisher rather than a creator.
+        </p>
+      </div>
+
+      <div class="scouting-section" style="margin-bottom:24px;">
+        <div class="scouting-title">✦ Overall Ratings</div>
+        <div class="rating-grid">
+          <div class="rating-item">
+            <span class="rating-label">Finishing</span>
+            <span class="rating-score s">S</span>
+          </div>
+          <div class="rating-item">
+            <span class="rating-label">Movement / PA</span>
+            <span class="rating-score a">A</span>
+          </div>
+          <div class="rating-item">
+            <span class="rating-label">Dribbling</span>
+            <span class="rating-score b">B</span>
+          </div>
+          <div class="rating-item">
+            <span class="rating-label">Aerial Ability</span>
+            <span class="rating-score c">C</span>
+          </div>
+          <div class="rating-item">
+            <span class="rating-label">Pressing / Work Rate</span>
+            <span class="rating-score b">B</span>
+          </div>
+          <div class="rating-item">
+            <span class="rating-label">Overall Potential</span>
+            <span class="rating-score a">A</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="scouting-section">
+        <div class="scouting-title">✦ Verdict</div>
+        <p class="scouting-text">
+          A <strong>high-efficiency finisher</strong> who consistently outperforms his xG, suggesting clinical quality beyond his level. Suited to a structured team where he can operate in and around the penalty area as the primary striker. <strong>Recommended for monitoring</strong> at Eliteserien level.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW 5: Attacking stats detail -->
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-title">Shooting Profile</div>
+      <div class="chart-wrap" style="height:200px;">
+        <canvas id="shootingChart"></canvas>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Duels & Defensive Contribution / 90</div>
+      <div class="stat-bar-list" style="margin-top:8px;">
+        <div class="stat-bar-item">
+          <div class="stat-bar-header">
+            <span class="stat-bar-name">Total Duels Won / 90</span>
+            <span class="stat-bar-val">9.5</span>
+          </div>
+          <div class="stat-bar-track"><div class="stat-bar-fill" style="width:63%"></div></div>
+        </div>
+        <div class="stat-bar-item">
+          <div class="stat-bar-header">
+            <span class="stat-bar-name">Aerial Duels / 90</span>
+            <span class="stat-bar-val">5.8</span>
+          </div>
+          <div class="stat-bar-track"><div class="stat-bar-fill red" style="width:38%"></div></div>
+        </div>
+        <div class="stat-bar-item">
+          <div class="stat-bar-header">
+            <span class="stat-bar-name">Interceptions / 90</span>
+            <span class="stat-bar-val">0.55</span>
+          </div>
+          <div class="stat-bar-track"><div class="stat-bar-fill accent2" style="width:27%"></div></div>
+        </div>
+        <div class="stat-bar-item">
+          <div class="stat-bar-header">
+            <span class="stat-bar-name">Recoveries Opp. Half / 90</span>
+            <span class="stat-bar-val">1.11</span>
+          </div>
+          <div class="stat-bar-track"><div class="stat-bar-fill accent2" style="width:44%"></div></div>
+        </div>
+        <div class="stat-bar-item">
+          <div class="stat-bar-header">
+            <span class="stat-bar-name">Losses (Own Half) / 90</span>
+            <span class="stat-bar-val">1.07</span>
+          </div>
+          <div class="stat-bar-track"><div class="stat-bar-fill red" style="width:35%"></div></div>
+        </div>
+        <div class="stat-bar-item">
+          <div class="stat-bar-header">
+            <span class="stat-bar-name">Fouls Suffered / 90</span>
+            <span class="stat-bar-val">0.96</span>
+          </div>
+          <div class="stat-bar-track"><div class="stat-bar-fill" style="width:38%"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Monthly Goal Output</div>
+      <div class="chart-wrap" style="height:200px;">
+        <canvas id="monthlyChart"></canvas>
+      </div>
+    </div>
+  </div>
 
 </div>
 
+<!-- FOOTER -->
+<div class="report-footer">
+  <div class="footer-logo">SH · 9</div>
+  <span>Data: Wyscout / InStat · Obos Ligaen 2024–2025 · 43 appearances · 3,082 minutes</span>
+  <span>Generated Nov 2025</span>
+</div>
+
 <script>
-// Radar Chart
-new Chart(document.getElementById("radarChart"), {
-    type: "radar",
-    data: {
-        labels: ["Finishing", "xG Efficiency", "Duels Won", "Recoveries", "Box Presence", "Dribbling", "Pressing", "Passing"],
-        datasets: [
-            {
-                label: "Haugland",
-                data: [88, 92, 82, 78, 87, 62, 80, 67],
-                backgroundColor: "rgba(16,185,129,0.25)",
-                borderColor: "#10b981",
-                borderWidth: 3
-            },
-            {
-                label: "OBOS Average",
-                data: [65, 55, 62, 55, 68, 55, 60, 60],
-                backgroundColor: "rgba(148,163,184,0.15)",
-                borderColor: "#94a3b8",
-                borderDash: [3, 2]
-            }
-        ]
-    },
-    options: {
-        plugins: { legend: { labels: { color: '#e2e8f0' } } },
-        scales: {
-            r: {
-                min: 40,
-                max: 100,
-                grid: { color: "#1e293b" },
-                pointLabels: { color: "#cbd5e1" },
-                ticks: { display: false }
-            }
+// ---- DATA ----
+const matchData = [{"match":"Åsane - Raufoss 0:0","date":"2024-07-27","mins":22,"goals":0,"assists":0,"xG":0.05,"shots":1,"onTarget":0,"touches_pa":3,"dribbles_att":2,"dribbles_won":1,"aerial_att":0,"aerial_won":0,"passes":6,"passes_acc":6,"interceptions":0,"recoveries":0,"prog_runs":0,"club":"Åsane"},{"match":"Sandnes Ulf - Åsane 0:3","date":"2024-08-03","mins":79,"goals":1,"assists":0,"xG":0.09,"shots":2,"onTarget":1,"touches_pa":6,"dribbles_att":0,"dribbles_won":0,"aerial_att":1,"aerial_won":1,"passes":7,"passes_acc":5,"interceptions":2,"recoveries":0,"prog_runs":2,"club":"Åsane"},{"match":"Åsane - Bryne 2:5","date":"2024-08-10","mins":97,"goals":1,"assists":0,"xG":1.11,"shots":5,"onTarget":2,"touches_pa":4,"dribbles_att":1,"dribbles_won":1,"aerial_att":4,"aerial_won":1,"passes":15,"passes_acc":7,"interceptions":0,"recoveries":1,"prog_runs":1,"club":"Åsane"},{"match":"Åsane - Aalesund 2:0","date":"2024-08-20","mins":52,"goals":0,"assists":0,"xG":0.01,"shots":1,"onTarget":0,"touches_pa":2,"dribbles_att":1,"dribbles_won":0,"aerial_att":3,"aerial_won":1,"passes":4,"passes_acc":4,"interceptions":0,"recoveries":1,"prog_runs":0,"club":"Åsane"},{"match":"Stabæk - Åsane 1:1","date":"2024-08-26","mins":77,"goals":1,"assists":0,"xG":0.73,"shots":2,"onTarget":2,"touches_pa":3,"dribbles_att":1,"dribbles_won":1,"aerial_att":5,"aerial_won":0,"passes":9,"passes_acc":7,"interceptions":0,"recoveries":2,"prog_runs":2,"club":"Åsane"},{"match":"Åsane - Kongsvinger 2:1","date":"2024-09-02","mins":85,"goals":0,"assists":0,"xG":0.02,"shots":2,"onTarget":0,"touches_pa":2,"dribbles_att":2,"dribbles_won":0,"aerial_att":4,"aerial_won":1,"passes":9,"passes_acc":7,"interceptions":0,"recoveries":2,"prog_runs":1,"club":"Åsane"},{"match":"Vålerenga - Åsane 5:0","date":"2024-09-16","mins":48,"goals":0,"assists":0,"xG":0.01,"shots":1,"onTarget":0,"touches_pa":1,"dribbles_att":0,"dribbles_won":0,"aerial_att":0,"aerial_won":0,"passes":6,"passes_acc":5,"interceptions":1,"recoveries":1,"prog_runs":0,"club":"Åsane"},{"match":"Åsane - Mjøndalen 5:0","date":"2024-09-21","mins":61,"goals":1,"assists":0,"xG":0.4,"shots":2,"onTarget":1,"touches_pa":3,"dribbles_att":0,"dribbles_won":0,"aerial_att":1,"aerial_won":0,"passes":8,"passes_acc":7,"interceptions":0,"recoveries":1,"prog_runs":0,"club":"Åsane"},{"match":"Start - Åsane 3:1","date":"2024-09-25","mins":29,"goals":0,"assists":0,"xG":0.01,"shots":1,"onTarget":0,"touches_pa":0,"dribbles_att":0,"dribbles_won":0,"aerial_att":0,"aerial_won":0,"passes":6,"passes_acc":4,"interceptions":0,"recoveries":0,"prog_runs":0,"club":"Åsane"},{"match":"Åsane - Egersund 1:2","date":"2024-09-28","mins":95,"goals":1,"assists":0,"xG":0.52,"shots":4,"onTarget":1,"touches_pa":4,"dribbles_att":1,"dribbles_won":1,"aerial_att":5,"aerial_won":1,"passes":13,"passes_acc":10,"interceptions":0,"recoveries":1,"prog_runs":1,"club":"Åsane"},{"match":"Åsane - Ranheim 1:2","date":"2024-10-21","mins":55,"goals":0,"assists":0,"xG":0.08,"shots":1,"onTarget":0,"touches_pa":1,"dribbles_att":0,"dribbles_won":0,"aerial_att":1,"aerial_won":0,"passes":8,"passes_acc":6,"interceptions":1,"recoveries":2,"prog_runs":0,"club":"Åsane"},{"match":"Sogndal - Åsane 0:2","date":"2024-10-26","mins":54,"goals":0,"assists":0,"xG":0.03,"shots":1,"onTarget":0,"touches_pa":1,"dribbles_att":0,"dribbles_won":0,"aerial_att":0,"aerial_won":0,"passes":8,"passes_acc":6,"interceptions":0,"recoveries":0,"prog_runs":0,"club":"Åsane"},{"match":"Åsane - Lyn 3:2","date":"2024-11-02","mins":80,"goals":3,"assists":0,"xG":1.0,"shots":6,"onTarget":3,"touches_pa":9,"dribbles_att":1,"dribbles_won":1,"aerial_att":3,"aerial_won":1,"passes":14,"passes_acc":11,"interceptions":2,"recoveries":2,"prog_runs":0,"club":"Åsane"},{"match":"Levanger - Åsane 2:3","date":"2024-11-09","mins":91,"goals":0,"assists":0,"xG":0.19,"shots":3,"onTarget":1,"touches_pa":2,"dribbles_att":0,"dribbles_won":0,"aerial_att":1,"aerial_won":0,"passes":15,"passes_acc":11,"interceptions":1,"recoveries":1,"prog_runs":3,"club":"Åsane"},{"match":"Kongsvinger - Åsane 1:1","date":"2025-03-31","mins":66,"goals":0,"assists":0,"xG":0.12,"shots":2,"onTarget":0,"touches_pa":2,"dribbles_att":0,"dribbles_won":0,"aerial_att":4,"aerial_won":0,"passes":9,"passes_acc":8,"interceptions":0,"recoveries":1,"prog_runs":1,"club":"Åsane"},{"match":"Åsane - Egersund 0:2","date":"2025-04-05","mins":36,"goals":0,"assists":0,"xG":0.0,"shots":1,"onTarget":0,"touches_pa":0,"dribbles_att":0,"dribbles_won":0,"aerial_att":1,"aerial_won":0,"passes":2,"passes_acc":0,"interceptions":0,"recoveries":0,"prog_runs":2,"club":"Åsane"},{"match":"Raufoss - Åsane 3:2","date":"2025-04-21","mins":104,"goals":1,"assists":0,"xG":0.85,"shots":3,"onTarget":2,"touches_pa":5,"dribbles_att":0,"dribbles_won":0,"aerial_att":1,"aerial_won":0,"passes":8,"passes_acc":6,"interceptions":1,"recoveries":2,"prog_runs":0,"club":"Åsane"},{"match":"Åsane - Aalesund 0:0","date":"2025-04-28","mins":97,"goals":0,"assists":0,"xG":0.0,"shots":0,"onTarget":0,"touches_pa":2,"dribbles_att":4,"dribbles_won":2,"aerial_att":12,"aerial_won":1,"passes":16,"passes_acc":9,"interceptions":0,"recoveries":4,"prog_runs":1,"club":"Åsane"},{"match":"Start - Åsane 2:3","date":"2025-05-03","mins":66,"goals":0,"assists":0,"xG":0.02,"shots":1,"onTarget":0,"touches_pa":2,"dribbles_att":0,"dribbles_won":0,"aerial_att":7,"aerial_won":1,"passes":6,"passes_acc":6,"interceptions":1,"recoveries":2,"prog_runs":0,"club":"Åsane"},{"match":"Åsane - Stabæk 1:1","date":"2025-05-12","mins":46,"goals":0,"assists":0,"xG":0.26,"shots":1,"onTarget":0,"touches_pa":2,"dribbles_att":0,"dribbles_won":0,"aerial_att":1,"aerial_won":0,"passes":5,"passes_acc":3,"interceptions":0,"recoveries":0,"prog_runs":1,"club":"Åsane"},{"match":"Sogndal - Åsane 2:0","date":"2025-05-16","mins":49,"goals":0,"assists":0,"xG":0.0,"shots":0,"onTarget":0,"touches_pa":2,"dribbles_att":0,"dribbles_won":0,"aerial_att":2,"aerial_won":0,"passes":7,"passes_acc":7,"interceptions":0,"recoveries":1,"prog_runs":0,"club":"Åsane"},{"match":"Åsane - Ranheim 2:1","date":"2025-05-25","mins":19,"goals":0,"assists":0,"xG":0.0,"shots":0,"onTarget":0,"touches_pa":0,"dribbles_att":0,"dribbles_won":0,"aerial_att":2,"aerial_won":1,"passes":3,"passes_acc":1,"interceptions":0,"recoveries":1,"prog_runs":0,"club":"Åsane"},{"match":"Odds - Åsane 1:0","date":"2025-05-31","mins":14,"goals":0,"assists":0,"xG":0.0,"shots":0,"onTarget":0,"touches_pa":0,"dribbles_att":0,"dribbles_won":0,"aerial_att":1,"aerial_won":0,"passes":0,"passes_acc":0,"interceptions":0,"recoveries":0,"prog_runs":0,"club":"Åsane"},{"match":"Åsane - Skeid 2:1","date":"2025-06-15","mins":70,"goals":0,"assists":0,"xG":0.0,"shots":0,"onTarget":0,"touches_pa":4,"dribbles_att":0,"dribbles_won":0,"aerial_att":5,"aerial_won":1,"passes":7,"passes_acc":5,"interceptions":2,"recoveries":2,"prog_runs":0,"club":"Åsane"},{"match":"Lillestrøm - Åsane 2:2","date":"2025-06-18","mins":48,"goals":0,"assists":0,"xG":0.0,"shots":0,"onTarget":0,"touches_pa":0,"dribbles_att":0,"dribbles_won":0,"aerial_att":2,"aerial_won":2,"passes":5,"passes_acc":4,"interceptions":0,"recoveries":0,"prog_runs":0,"club":"Åsane"},{"match":"Åsane - Moss 2:1","date":"2025-06-21","mins":62,"goals":0,"assists":1,"xG":0.19,"shots":1,"onTarget":0,"touches_pa":3,"dribbles_att":1,"dribbles_won":1,"aerial_att":2,"aerial_won":0,"passes":9,"passes_acc":6,"interceptions":0,"recoveries":0,"prog_runs":2,"club":"Åsane"},{"match":"Åsane - Hødd 2:2","date":"2025-07-26","mins":88,"goals":1,"assists":0,"xG":0.31,"shots":6,"onTarget":1,"touches_pa":11,"dribbles_att":3,"dribbles_won":0,"aerial_att":4,"aerial_won":2,"passes":16,"passes_acc":10,"interceptions":1,"recoveries":3,"prog_runs":2,"club":"Hødd"},{"match":"Hødd - Egersund 1:0","date":"2025-07-30","mins":86,"goals":0,"assists":1,"xG":0.28,"shots":1,"onTarget":1,"touches_pa":1,"dribbles_att":0,"dribbles_won":0,"aerial_att":9,"aerial_won":2,"passes":11,"passes_acc":8,"interceptions":0,"recoveries":2,"prog_runs":0,"club":"Hødd"},{"match":"Ranheim - Hødd 2:1","date":"2025-08-02","mins":54,"goals":1,"assists":0,"xG":0.1,"shots":1,"onTarget":1,"touches_pa":3,"dribbles_att":0,"dribbles_won":0,"aerial_att":2,"aerial_won":0,"passes":8,"passes_acc":7,"interceptions":0,"recoveries":0,"prog_runs":0,"club":"Hødd"},{"match":"Sogndal - Hødd 2:1","date":"2025-08-06","mins":98,"goals":1,"assists":0,"xG":0.25,"shots":2,"onTarget":1,"touches_pa":5,"dribbles_att":2,"dribbles_won":1,"aerial_att":9,"aerial_won":1,"passes":6,"passes_acc":5,"interceptions":2,"recoveries":1,"prog_runs":2,"club":"Hødd"},{"match":"Hødd - Start 0:2","date":"2025-08-10","mins":96,"goals":0,"assists":0,"xG":0.16,"shots":1,"onTarget":1,"touches_pa":6,"dribbles_att":0,"dribbles_won":0,"aerial_att":12,"aerial_won":5,"passes":14,"passes_acc":10,"interceptions":2,"recoveries":5,"prog_runs":0,"club":"Hødd"},{"match":"Hødd - Skeid 1:1","date":"2025-08-17","mins":98,"goals":1,"assists":0,"xG":0.96,"shots":8,"onTarget":2,"touches_pa":11,"dribbles_att":2,"dribbles_won":1,"aerial_att":9,"aerial_won":2,"passes":16,"passes_acc":8,"interceptions":0,"recoveries":0,"prog_runs":0,"club":"Hødd"},{"match":"Mjøndalen - Hødd 1:1","date":"2025-08-23","mins":87,"goals":1,"assists":0,"xG":0.72,"shots":3,"onTarget":1,"touches_pa":2,"dribbles_att":3,"dribbles_won":2,"aerial_att":9,"aerial_won":3,"passes":10,"passes_acc":8,"interceptions":1,"recoveries":2,"prog_runs":0,"club":"Hødd"},{"match":"Hødd - Raufoss 2:4","date":"2025-08-30","mins":98,"goals":1,"assists":0,"xG":0.18,"shots":2,"onTarget":2,"touches_pa":7,"dribbles_att":2,"dribbles_won":0,"aerial_att":8,"aerial_won":2,"passes":8,"passes_acc":4,"interceptions":0,"recoveries":1,"prog_runs":1,"club":"Hødd"},{"match":"Odds - Hødd 1:2","date":"2025-09-13","mins":92,"goals":0,"assists":0,"xG":0.04,"shots":1,"onTarget":0,"touches_pa":5,"dribbles_att":1,"dribbles_won":1,"aerial_att":14,"aerial_won":2,"passes":15,"passes_acc":10,"interceptions":1,"recoveries":4,"prog_runs":1,"club":"Hødd"},{"match":"Hødd - Moss 2:1","date":"2025-09-20","mins":93,"goals":1,"assists":0,"xG":1.07,"shots":4,"onTarget":2,"touches_pa":5,"dribbles_att":1,"dribbles_won":1,"aerial_att":8,"aerial_won":1,"passes":16,"passes_acc":13,"interceptions":1,"recoveries":1,"prog_runs":4,"club":"Hødd"},{"match":"Hødd - Lyn 0:1","date":"2025-09-29","mins":96,"goals":0,"assists":0,"xG":0.1,"shots":1,"onTarget":1,"touches_pa":2,"dribbles_att":0,"dribbles_won":0,"aerial_att":11,"aerial_won":1,"passes":10,"passes_acc":7,"interceptions":1,"recoveries":2,"prog_runs":0,"club":"Hødd"},{"match":"Lillestrøm - Hødd 4:0","date":"2025-10-04","mins":46,"goals":0,"assists":0,"xG":0.0,"shots":0,"onTarget":0,"touches_pa":0,"dribbles_att":0,"dribbles_won":0,"aerial_att":2,"aerial_won":0,"passes":8,"passes_acc":5,"interceptions":0,"recoveries":0,"prog_runs":0,"club":"Hødd"},{"match":"Hødd - Åsane 3:3","date":"2025-10-18","mins":101,"goals":1,"assists":1,"xG":0.15,"shots":1,"onTarget":1,"touches_pa":4,"dribbles_att":1,"dribbles_won":0,"aerial_att":1,"aerial_won":1,"passes":10,"passes_acc":9,"interceptions":0,"recoveries":1,"prog_runs":0,"club":"Hødd"},{"match":"Kongsvinger - Hødd 3:0","date":"2025-10-22","mins":62,"goals":0,"assists":0,"xG":0.0,"shots":0,"onTarget":0,"touches_pa":1,"dribbles_att":2,"dribbles_won":2,"aerial_att":2,"aerial_won":0,"passes":9,"passes_acc":8,"interceptions":1,"recoveries":1,"prog_runs":0,"club":"Hødd"},{"match":"Hødd - Stabæk 1:3","date":"2025-10-25","mins":96,"goals":0,"assists":0,"xG":0.06,"shots":1,"onTarget":0,"touches_pa":6,"dribbles_att":0,"dribbles_won":0,"aerial_att":5,"aerial_won":1,"passes":13,"passes_acc":10,"interceptions":1,"recoveries":0,"prog_runs":1,"club":"Hødd"},{"match":"Egersund - Hødd 0:0","date":"2025-11-01","mins":68,"goals":0,"assists":0,"xG":0.0,"shots":0,"onTarget":0,"touches_pa":0,"dribbles_att":1,"dribbles_won":0,"aerial_att":7,"aerial_won":3,"passes":10,"passes_acc":8,"interceptions":0,"recoveries":2,"prog_runs":0,"club":"Hødd"},{"match":"Hødd - Aalesund 0:0","date":"2025-11-08","mins":89,"goals":0,"assists":0,"xG":0.0,"shots":0,"onTarget":0,"touches_pa":2,"dribbles_att":2,"dribbles_won":1,"aerial_att":9,"aerial_won":3,"passes":12,"passes_acc":8,"interceptions":1,"recoveries":1,"prog_runs":0,"club":"Hødd"}];
+
+// ---- CHARTS ----
+Chart.defaults.color = '#6b7280';
+Chart.defaults.borderColor = '#222834';
+Chart.defaults.font.family = 'DM Sans';
+
+// RADAR CHART
+const radarCtx = document.getElementById('radarChart').getContext('2d');
+new Chart(radarCtx, {
+  type: 'radar',
+  data: {
+    labels: ['Goals/90', 'xG/90', 'Shots/90', 'Touches\nPA/90', 'Dribble%', 'Pass%', 'Aerial%', 'Intercept/90', 'Prog Runs/90'],
+    datasets: [{
+      label: 'Haugland',
+      data: [83, 50, 70, 66, 55, 72, 21, 27, 48],
+      backgroundColor: 'rgba(232, 240, 51, 0.12)',
+      borderColor: '#e8f033',
+      borderWidth: 2,
+      pointBackgroundColor: '#e8f033',
+      pointRadius: 4,
+      pointHoverRadius: 6,
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: true,
+    scales: {
+      r: {
+        min: 0, max: 100,
+        ticks: { display: false, stepSize: 20 },
+        grid: { color: '#222834' },
+        angleLines: { color: '#222834' },
+        pointLabels: {
+          color: '#9ca3af',
+          font: { size: 10, family: 'DM Sans' },
+          padding: 8
         }
+      }
+    },
+    plugins: {
+      legend: { display: false }
     }
+  }
 });
 
-// PDF Function (din siste versjon)
-function generatePDF() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    let y = 25;
+// TIMELINE CHART
+const tlCtx = document.getElementById('timelineChart').getContext('2d');
+const tlLabels = matchData.map(m => m.date.slice(5));
+const tlGoals = matchData.map(m => m.goals);
+const tlXG = matchData.map(m => m.xG);
+const tlColors = matchData.map(m => m.club === 'Hødd' ? 'rgba(232,240,51,0.7)' : 'rgba(59,232,176,0.7)');
 
-    const addSection = (title, text) => {
-        doc.setFont("Helvetica", "bold");
-        doc.setFontSize(14);
-        doc.text(title, 20, y);
-        y += 12;
+new Chart(tlCtx, {
+  type: 'bar',
+  data: {
+    labels: tlLabels,
+    datasets: [
+      {
+        label: 'Goals',
+        data: tlGoals,
+        backgroundColor: tlColors,
+        borderRadius: 3,
+        order: 2,
+      },
+      {
+        label: 'xG',
+        data: tlXG,
+        type: 'line',
+        borderColor: 'rgba(255,77,109,0.7)',
+        backgroundColor: 'rgba(255,77,109,0.05)',
+        borderWidth: 1.5,
+        pointRadius: 0,
+        tension: 0.3,
+        fill: false,
+        order: 1,
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: true,
+        labels: {
+          color: '#6b7280',
+          boxWidth: 12,
+          font: { size: 11 }
+        }
+      },
+      tooltip: {
+        callbacks: {
+          title: (items) => matchData[items[0].dataIndex].match,
+          afterBody: (items) => {
+            const m = matchData[items[0].dataIndex];
+            return [`Club: ${m.club}`, `Mins: ${m.mins}`, `G: ${m.goals}  A: ${m.assists}  xG: ${m.xG}`];
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        ticks: { maxRotation: 45, font: { size: 9 }, color: '#4b5563' },
+        grid: { display: false }
+      },
+      y: {
+        ticks: { font: { size: 10 }, stepSize: 1 },
+        grid: { color: '#1a1e28' },
+        min: 0, max: 4
+      }
+    }
+  }
+});
 
-        doc.setFont("Helvetica", "normal");
-        doc.setFontSize(11);
-        const lines = doc.splitTextToSize(text, 170);
-        doc.text(lines, 20, y);
-        y += lines.length * 7 + 15;   // Mer luft
-    };
+// CUMULATIVE CHART
+const cumCtx = document.getElementById('cumulChart').getContext('2d');
+let cumG = 0, cumXG = 0;
+const cumGoals = [], cumXGArr = [];
+matchData.forEach(m => {
+  cumG += m.goals;
+  cumXG += m.xG;
+  cumGoals.push(cumG);
+  cumXGArr.push(+cumXG.toFixed(2));
+});
 
-    // HEADER
-    doc.setFont("Helvetica", "bold");
-    doc.setFontSize(18);
-    doc.text("Sebastian Haugland – Scouting Report", 20, y);
-    y += 15;
+new Chart(cumCtx, {
+  type: 'line',
+  data: {
+    labels: matchData.map((m,i) => i+1),
+    datasets: [
+      {
+        label: 'Goals',
+        data: cumGoals,
+        borderColor: '#e8f033',
+        backgroundColor: 'rgba(232,240,51,0.06)',
+        borderWidth: 2.5,
+        pointRadius: 0,
+        tension: 0.1,
+        fill: false,
+      },
+      {
+        label: 'xG',
+        data: cumXGArr,
+        borderColor: 'rgba(255,77,109,0.6)',
+        backgroundColor: 'rgba(255,77,109,0.04)',
+        borderWidth: 1.5,
+        borderDash: [5,3],
+        pointRadius: 0,
+        tension: 0.1,
+        fill: false,
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        labels: { color: '#6b7280', boxWidth: 14, font: { size: 11 } }
+      },
+      tooltip: {
+        callbacks: {
+          title: (items) => `Match ${items[0].dataIndex + 1}: ${matchData[items[0].dataIndex].match}`,
+        }
+      }
+    },
+    scales: {
+      x: {
+        ticks: { font: { size: 10 }, color: '#4b5563' },
+        grid: { color: '#1a1e28' },
+        title: { display: true, text: 'Appearance #', color: '#4b5563', font: { size: 10 } }
+      },
+      y: {
+        ticks: { font: { size: 10 } },
+        grid: { color: '#1a1e28' },
+      }
+    }
+  }
+});
 
-    doc.setFontSize(11);
-    doc.setFont("Helvetica", "normal");
-    doc.text("Centre Forward • IL Hødd • OBOS Ligaen • March 2026", 20, y);
-    y += 25;
+// SHOOTING PIE
+const shotCtx = document.getElementById('shootingChart').getContext('2d');
+new Chart(shotCtx, {
+  type: 'doughnut',
+  data: {
+    labels: ['Goals', 'On Target (no goal)', 'Off Target'],
+    datasets: [{
+      data: [17, 15, 40],
+      backgroundColor: ['#e8f033', '#3be8b0', '#2a2f3a'],
+      borderColor: '#0a0c10',
+      borderWidth: 2,
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    cutout: '65%',
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: { color: '#9ca3af', boxWidth: 10, font: { size: 10 }, padding: 10 }
+      },
+      tooltip: {
+        callbacks: {
+          label: (item) => `${item.label}: ${item.raw} shots`
+        }
+      }
+    }
+  }
+});
 
-    // PROFILE
-    addSection("Player Profile", 
-    "Sebastian Haugland is a 29-year-old centre forward whose performance profile is characterized by high finishing efficiency combined with above-average physical and defensive contribution for his position.");
+// MONTHLY GOALS
+const monthCtx = document.getElementById('monthlyChart').getContext('2d');
+const monthlyData = {
+  labels: ['Jul-24','Aug-24','Sep-24','Oct-24','Nov-24','Mar-25','Apr-25','May-25','Jun-25','Jul-25','Aug-25','Sep-25','Oct-25','Nov-25'],
+  goals: [0,3,2,0,3,0,1,0,0,1,5,1,1,0],
+  assists: [0,0,0,0,0,0,0,0,1,1,0,0,1,0]
+};
 
-    // KEY METRICS
-    addSection("Key Performance Metrics",
-    "Goals per 90: 0.50 (+6.6 over xG)\n" +
-    "xG per 90: ~0.30\n" +
-    "Duels won per 90: 11.2\n" +
-    "Recoveries in opposition half per 90: 3.9\n" +
-    "Touches in penalty area per 90: 13.4");
+new Chart(monthCtx, {
+  type: 'bar',
+  data: {
+    labels: monthlyData.labels,
+    datasets: [
+      {
+        label: 'Goals',
+        data: monthlyData.goals,
+        backgroundColor: 'rgba(232,240,51,0.75)',
+        borderRadius: 3,
+      },
+      {
+        label: 'Assists',
+        data: monthlyData.assists,
+        backgroundColor: 'rgba(59,232,176,0.5)',
+        borderRadius: 3,
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { labels: { color: '#6b7280', boxWidth: 10, font: { size: 10 } } }
+    },
+    scales: {
+      x: {
+        ticks: { font: { size: 9 }, maxRotation: 45, color: '#4b5563' },
+        grid: { display: false }
+      },
+      y: {
+        ticks: { font: { size: 10 }, stepSize: 1 },
+        grid: { color: '#1a1e28' }
+      }
+    }
+  }
+});
 
-    // ATTACKING
-    addSection("Attacking Analysis",
-    "Haugland has scored 17 goals from an estimated 10.4 xG (+6.6 overperformance). His relatively modest xG per 90 (~0.30) shows that he is not a high-volume chance creator, but rather a clinical finisher who capitalizes on quality opportunities through positioning and timing.");
+// ---- MATCH LOG ----
+const logEl = document.getElementById('matchLog');
+[...matchData].reverse().forEach(m => {
+  const row = document.createElement('div');
+  row.className = 'match-row';
 
-    // DEFENSIVE
-    addSection("Defensive & Physical Contribution",
-    "Haugland stands out with 11.2 duels won and 3.9 recoveries in the opposition half per 90 minutes. This defensive involvement is well above average for a centre forward and adds significant tactical value beyond goal scoring.");
+  const gChip = m.goals > 0 
+    ? `<div class="goal-chip scored" title="${m.goals} goal(s)">${m.goals}G</div>` 
+    : `<div class="goal-chip empty">-</div>`;
+  
+  const aChip = m.assists > 0 
+    ? `<div class="goal-chip assist" title="${m.assists} assist(s)">${m.assists}A</div>` 
+    : `<div class="goal-chip empty">-</div>`;
 
-    // SPATIAL
-    addSection("Spatial Profile",
-    "Heatmap data reveals a highly concentrated presence inside and around the penalty area, with a bias toward the right side. Minimal activity in deeper zones confirms a classic box-striker profile focused on end-product actions.");
+  const clubClass = m.club === 'Hødd' ? 'hodd' : 'asane';
 
-    // STRENGTHS & WEAKNESSES
-    addSection("Strengths",
-    "• Elite finishing efficiency relative to chance volume\n" +
-    "• Strong penalty-box positioning and movement\n" +
-    "• High physical competitiveness and duel involvement\n" +
-    "• Above-average pressing and defensive contribution");
-
-    addSection("Weaknesses",
-    "• Low shot volume and limited chance creation\n" +
-    "• Minimal involvement in build-up and link-up play\n" +
-    "• Below-average passing and creativity\n" +
-    "• Goal output is partially dependent on finishing efficiency");
-
-    // TACTICAL FIT & PROJECTION
-    addSection("Tactical Fit",
-    "Best suited for structured attacking systems that generate frequent box entries and crosses. Less suited for possession-heavy systems that require extensive link-up play or striker-led progression.");
-
-    addSection("Projection",
-    "At 29 years of age, Haugland is projected to deliver 8–13 goals per season in the Eliteserien within a well-structured team. His defensive contribution provides additional value if finishing efficiency normalizes.");
-
-    // FINAL ASSESSMENT
-    addSection("Final Assessment",
-    "Haugland profiles as a high-efficiency, low-volume centre forward whose value is driven by finishing and defensive contribution rather than chance creation. His effectiveness is closely tied to team structure and the quality of service he receives in advanced areas.");
-
-    // LIMITATIONS
-    addSection("Data Limitations",
-    "Analysis is based on 43 OBOS Ligaen matches. Performance may be influenced by team tactics and chance quality. Finishing overperformance is not always sustainable over longer periods.");
-
-    // FOOTER
-    doc.setFontSize(10);
-    doc.text("Report generated from available match data (2024–2025 season)", 20, 285);
-
-    doc.save("Sebastian_Haugland_Scouting_Report.pdf");
-}
+  row.innerHTML = `
+    <span class="match-date">${m.date.slice(0,10)}</span>
+    <span class="match-name"><span class="club-dot ${clubClass}" style="display:inline-block;margin-right:6px;vertical-align:middle;"></span>${m.match}</span>
+    <span class="match-mins">${m.mins}'</span>
+    ${gChip}
+    ${aChip}
+    <span class="match-mins" style="color:#4b5563;font-size:10px;">${m.xG.toFixed(2)}xG</span>
+  `;
+  logEl.appendChild(row);
+});
 </script>
-
 </body>
 </html>
